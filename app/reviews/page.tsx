@@ -1,3 +1,9 @@
 const ReviewsPage = () => {
-  return <div>ReviewsPage</div>;
+  return (
+    <>
+      <h1>reviews</h1>
+      <div>ReviewsPage</div>;
+    </>
+  );
 };
+export default ReviewsPage;

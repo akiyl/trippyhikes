@@ -27,13 +27,13 @@ const NavBar = () => {
             >
               Discover
             </Link>
-            <Link
+            {/* <Link
               href="/reviews"
               className="hover:underline underline-offset-2 cursor-pointer transition duration-200"
             >
               {" "}
               Reviews
-            </Link>
+            </Link> */}
             <Link
               href="/about"
               className="hover:underline underline-offset-2 cursor-pointer transition duration-200"
