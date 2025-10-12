@@ -1,0 +1,44 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Destination {
+  id             Int      @id @default(autoincrement())
+  name           String
+  slug           String?  @unique
+  imageSrc       String
+  description    String
+  price          Float
+  duration       String
+  distance       Float?
+  grade          String
+  region         String
+  maxAltitude    Int?
+  baseCamp       String?
+  season         String?
+  month          String?
+  pickupLocation String?
+  dropLocation   String?
+  foodStay       String?
+  trailType      String?
+  requirements   String?
+  trekItinerary  String?
+  costTerms      String?
+  trekEssentials String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  Review         Review[]
+}
+
+model Review {
+  id            Int         @id @default(autoincrement())
+  rating        Int
+  comment       String
+  destination   Destination @relation(fields: [destinationId], references: [id])
+  destinationId Int
+}
