@@ -1,4 +1,16 @@
 /** @type {import('next').NextConfig} */
+const isVercelBuild = process.env.VERCEL === "1";
+
+module.exports = {
+  output: "standalone",
+  experimental: {
+    instrumentationHook: false,
+  },
+  env: {
+    SKIP_DB_BUILD: isVercelBuild ? "true" : "false",
+  },
+};
+
 const nextConfig = {
   images: {
     remotePatterns: [
