@@ -1,12 +1,21 @@
+export const dynamic = "force-dynamic";
+
 import Image from "next/image";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { Calendar, Mountain, Star } from "lucide-react";
+import { Destination } from "@prisma/client";
 
 export default async function TreksPage() {
-  const treks = await prisma.destination.findMany({
-    orderBy: { createdAt: "desc" },
-  });
+  let treks: Destination[] = [];
+  try {
+    treks = await prisma.destination.findMany({
+      orderBy: { createdAt: "desc" },
+    });
+  } catch (e: any) {
+    console.error("[TreksPage] Prisma error:", e?.message || e);
+    treks = [];
+  }
 
   if (!treks || treks.length === 0) {
     return (

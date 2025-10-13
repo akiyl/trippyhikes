@@ -36,6 +36,19 @@ export default async function DisplayPageWithPlanner({ destinations }: Props) {
         {/* 👇 Client-side interactive form */}
         <SchedulePlannerClient destinations={destinations} />
 
+        {/* Fallback when destinations are empty (e.g., DB unreachable) */}
+        {(!destinations || destinations.length === 0) && (
+          <div className="mt-8 bg-yellow-50 border border-yellow-200 text-yellow-800 p-4 rounded-lg max-w-2xl">
+            <h3 className="font-semibold">
+              No destinations available right now
+            </h3>
+            <p className="text-sm mt-1">
+              We couldn't load destinations at this time. Please try refreshing
+              or come back later.
+            </p>
+          </div>
+        )}
+
         <PopularLocations />
         <BookYourNextTripServer />
         <WinterSpecial />
