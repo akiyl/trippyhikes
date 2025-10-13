@@ -50,8 +50,8 @@ const NavBar = () => {
             </Link>
           </div>
 
-          {/* Sign In Button (hidden on mobile) */}
-          <button
+          <Link
+            href="/signin"
             className="
                 relative overflow-hidden px-6 py-2
                 rounded-full border border-white/20 backdrop-blur-md
@@ -62,14 +62,13 @@ const NavBar = () => {
           >
             <span className="relative z-10">Sign In</span>
 
-            {/* Subtle gradient shimmer effect */}
             <span
               className="
                   absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent
                   translate-x-[-100%] animate-[shine_2s_infinite]
                 "
             />
-          </button>
+          </Link>
 
           {/* Hamburger Menu Icon */}
           <div

@@ -38,7 +38,7 @@ export default async function DisplayPageWithPlanner({ destinations }: Props) {
 
         <PopularLocations />
         <BookYourNextTripServer />
-        {/* <WinterSpecial /> */}
+        <WinterSpecial />
         <ImageGallery destinations={destinations} />
         <Footer />
       </div>

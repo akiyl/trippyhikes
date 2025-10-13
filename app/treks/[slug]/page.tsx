@@ -7,9 +7,16 @@ import { Star, MapPin, Calendar, Mountain } from "lucide-react";
 export default async function TrekDetailPage({
   params,
 }: {
-  params: { slug: string };
+  // Next's generated PageProps expects params to be a Promise-resolvable shape.
+  // Accept either a Promise or a plain object and await it to get the slug.
+  params?: Promise<{ slug: string | string[] }>;
 }) {
-  const trek = await getDestinationBySlug(params.slug);
+  const resolved = await params;
+  const rawSlug = Array.isArray(resolved?.slug)
+    ? resolved?.slug[0]
+    : resolved?.slug;
+  if (!rawSlug) return notFound();
+  const trek = await getDestinationBySlug(String(rawSlug));
 
   if (!trek) return notFound();
 

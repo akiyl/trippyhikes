@@ -42,3 +42,17 @@ model Review {
   destination   Destination @relation(fields: [destinationId], references: [id])
   destinationId Int
 }
+
+model User {
+  id        String   @id @default(cuid())
+  name      String?
+  email     String   @unique
+  password  String
+  role      Role     @default(USER)
+  createdAt DateTime @default(now())
+}
+
+enum Role {
+  USER
+  ADMIN
+}
