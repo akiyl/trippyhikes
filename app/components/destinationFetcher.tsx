@@ -10,6 +10,8 @@ type Props = {
   trailType?: string;
 };
 
+export const dynamic = "force-dynamic";
+
 export default async function DestinationFetcher({
   children,
   trailType,
