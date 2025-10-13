@@ -69,7 +69,7 @@ export default function ImageGallery({ destinations }: Props) {
       {/* See More Button */}
       {destinations.length > 8 && (
         <div className="flex justify-center mt-10">
-          <Link href="/gallery">
+          <Link href="/treks">
             <button
               className="
                 relative overflow-hidden px-6 py-3

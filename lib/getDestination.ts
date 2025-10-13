@@ -18,8 +18,12 @@ export const getDestinationsByTrailType = cache(async (trailType: string) => {
 });
 
 // 🧭 Get single destination by slug or ID
-export const getDestinationBySlug = cache(async (id: number) => {
+// 🧭 Get single destination by slug
+export const getDestinationBySlug = cache(async (slugOrId: string) => {
+  const isNumeric = /^\d+$/.test(slugOrId);
+
   return prisma.destination.findUnique({
-    where: { id }, // use the unique id field
+    where: isNumeric ? { id: Number(slugOrId) } : { slug: slugOrId },
+    include: { Review: true },
   });
 });
