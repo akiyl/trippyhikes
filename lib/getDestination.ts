@@ -1,13 +1,24 @@
 // lib/data.ts
 import { prisma } from "@/lib/prisma";
 import { cache } from "react";
+import { createClient } from "@supabase/supabase-js";
+const supabase = createClient(
+  process.env.SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
+);
 
 // 🧭 Get all destinations
 export const getDestinations = cache(async () => {
   try {
-    return await prisma.destination.findMany({
-      orderBy: { createdAt: "desc" },
-    });
+    const { data, error } = await supabase
+      .from("Destination")
+      .select("*")
+      .order("createdAt", { ascending: false });
+    if (error) {
+      console.error("[getDestinations] supabase error", error.message);
+      return [];
+    }
+    return data || [];
   } catch (e: any) {
     console.error("[getDestinations] Prisma error:", e?.message || e);
     // Return empty array as a safe fallback so prerender/build doesn't fail
@@ -18,10 +29,19 @@ export const getDestinations = cache(async () => {
 // 🧭 Get destinations filtered by trailType
 export const getDestinationsByTrailType = cache(async (trailType: string) => {
   try {
-    return await prisma.destination.findMany({
-      where: { trailType },
-      orderBy: { createdAt: "desc" },
-    });
+    const { data, error } = await supabase
+      .from("Destination")
+      .select("*")
+      .eq("trailType", trailType)
+      .order("createdAt", { ascending: false });
+    if (error) {
+      console.error(
+        "[getDestinationsByTrailType] supabase error",
+        error.message
+      );
+      return [];
+    }
+    return data || [];
   } catch (e: any) {
     console.error(
       "[getDestinationsByTrailType] Prisma error:",
