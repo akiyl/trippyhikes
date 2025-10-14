@@ -87,18 +87,29 @@ const NavBar = () => {
         }`}
       >
         <div className="flex flex-col px-6 py-20 space-y-6 text-gray-800 text-lg">
-          {["Discover", "Tips", "Reviews", "About"].map((item) => (
-            <span
-              key={item}
+          {[
+            { label: "Discover", href: "/discover" },
+            { label: "Treks", href: "/treks" },
+            { label: "Reviews", href: "/reviews" },
+            { label: "About", href: "/about" },
+          ].map((link) => (
+            <Link
+              key={link.label}
+              href={link.href}
               className="hover:text-blue-500 cursor-pointer transition"
               onClick={() => setIsOpen(false)}
             >
-              {item}
-            </span>
+              {link.label}
+            </Link>
           ))}
-          <div className="mt-4 bg-blue-950 text-white text-center py-2 rounded-3xl cursor-pointer hover:bg-blue-900 transition">
+
+          <Link
+            href="/signin"
+            className="mt-4 bg-blue-950 text-white text-center py-2 rounded-3xl hover:bg-blue-900 transition"
+            onClick={() => setIsOpen(false)}
+          >
             Sign in
-          </div>
+          </Link>
         </div>
       </div>
 

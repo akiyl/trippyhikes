@@ -1,5 +1,3 @@
-export const dynamic = "force-dynamic";
-
 import DisplayPage from "./components/display";
 import DestinationFetcher from "./components/destinationFetcher";
 import BookYourNextTrip from "./components/bookYourNextTrip";

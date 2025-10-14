@@ -1,5 +1,3 @@
-export const dynamic = "force-dynamic";
-
 import { getDestinations } from "@/lib/getDestination";
 import BookYourNextTripClient from "../bookYourNextTrip";
 import React from "react";
