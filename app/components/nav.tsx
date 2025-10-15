@@ -90,7 +90,12 @@ const NavBar = () => {
           {[
             { label: "Discover", href: "/discover" },
             { label: "Treks", href: "/treks" },
-            { label: "Reviews", href: "/reviews" },
+            {
+              label: "Contact Us",
+              href: `https://wa.me/${9528277247}?text=${encodeURIComponent(
+                "Hello, I would like to get in touch with you."
+              )}`,
+            },
             { label: "About", href: "/about" },
           ].map((link) => (
             <Link
