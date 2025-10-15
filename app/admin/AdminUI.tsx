@@ -16,10 +16,13 @@ export default function AdminUI() {
   const [error, setError] = useState<string | null>(null);
   const [creating, setCreating] = useState(false);
   const [success, setSuccess] = useState<string | null>(null);
+  const [uploading, setUploading] = useState(false);
 
+  // Trek fields
   const [name, setName] = useState("");
   const [slug, setSlug] = useState("");
   const [imageSrc, setImageSrc] = useState("");
+  const [imageFile, setImageFile] = useState<File | null>(null);
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [duration, setDuration] = useState("");
@@ -58,13 +61,45 @@ export default function AdminUI() {
     fetchItems();
   }, []);
 
+  // Upload file first -> get URL
+  const uploadImage = async () => {
+    if (!imageFile) return;
+    setUploading(true);
+    setError(null);
+    try {
+      const formData = new FormData();
+      formData.append("file", imageFile);
+
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!res.ok) throw new Error("Image upload failed");
+      const data = await res.json();
+      if (!data.url) throw new Error("No URL returned");
+      setImageSrc(data.url);
+      setSuccess("Image uploaded successfully!");
+      setTimeout(() => setSuccess(null), 3000);
+    } catch (e: any) {
+      setError(e.message || "Upload error");
+    } finally {
+      setUploading(false);
+    }
+  };
+
   const createItem = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
     setSuccess(null);
+
+    if (!imageSrc) {
+      setError("Please upload an image before creating.");
+      return;
+    }
+
     setCreating(true);
     try {
-      // Convert numeric fields before sending
       const payload: any = {
         name,
         slug,
@@ -95,11 +130,14 @@ export default function AdminUI() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
+
       if (!res.ok) throw new Error("Create failed");
-      // clear all fields
+
+      // Clear all fields
       setName("");
       setSlug("");
       setImageSrc("");
+      setImageFile(null);
       setDescription("");
       setPrice("");
       setDuration("");
@@ -118,6 +156,7 @@ export default function AdminUI() {
       setTrekItinerary("");
       setCostTerms("");
       setTrekEssentials("");
+
       await fetchItems();
       setSuccess("Created successfully");
       setTimeout(() => setSuccess(null), 3000);
@@ -142,9 +181,42 @@ export default function AdminUI() {
 
   return (
     <div className="p-6">
-      <h2 className="text-2xl font-semibold mb-4">Manage destinations</h2>
+      <h2 className="text-2xl font-semibold mb-4">Manage Destinations</h2>
 
       <form onSubmit={createItem} className="space-y-4 mb-6 max-w-4xl">
+        {/* Image upload section */}
+        <div className="space-y-2">
+          <label className="block font-semibold">Upload Trek Image</label>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => setImageFile(e.target.files?.[0] || null)}
+            disabled={creating || uploading}
+            className="block w-full border p-2 rounded"
+          />
+          <div className="flex gap-2">
+            <button
+              type="button"
+              onClick={uploadImage}
+              disabled={!imageFile || uploading}
+              className="bg-gray-700 text-white px-4 py-2 rounded disabled:opacity-50"
+            >
+              {uploading ? "Uploading..." : "Upload Image"}
+            </button>
+            {imageSrc && (
+              <a
+                href={imageSrc}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-600 underline"
+              >
+                View Uploaded Image
+              </a>
+            )}
+          </div>
+        </div>
+
+        {/* Basic Fields */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           <input
             value={name}
@@ -158,13 +230,6 @@ export default function AdminUI() {
             value={slug}
             onChange={(e) => setSlug(e.target.value)}
             placeholder="Slug"
-            className="w-full p-2 border rounded"
-            disabled={creating}
-          />
-          <input
-            value={imageSrc}
-            onChange={(e) => setImageSrc(e.target.value)}
-            placeholder="Image URL"
             className="w-full p-2 border rounded"
             disabled={creating}
           />
@@ -261,6 +326,7 @@ export default function AdminUI() {
           />
         </div>
 
+        {/* Textareas */}
         <div className="grid grid-cols-1 gap-3">
           <textarea
             value={description}
@@ -299,14 +365,12 @@ export default function AdminUI() {
           />
         </div>
 
-        <div className="flex items-center gap-3">
-          <button
-            className="bg-blue-600 text-white px-4 py-2 rounded disabled:opacity-60"
-            disabled={creating}
-          >
-            {creating ? "Creating..." : "Create Destination"}
-          </button>
-        </div>
+        <button
+          className="bg-blue-600 text-white px-4 py-2 rounded disabled:opacity-60"
+          disabled={creating}
+        >
+          {creating ? "Creating..." : "Create Destination"}
+        </button>
       </form>
 
       {success && <div className="text-green-600 mb-4">{success}</div>}
@@ -325,14 +389,12 @@ export default function AdminUI() {
                 <div className="font-bold">{it.name}</div>
                 <div className="text-sm text-gray-600">{it.slug}</div>
               </div>
-              <div className="space-x-2">
-                <button
-                  onClick={() => deleteItem(it.id)}
-                  className="bg-red-600 text-white px-3 py-1 rounded"
-                >
-                  Delete
-                </button>
-              </div>
+              <button
+                onClick={() => deleteItem(it.id)}
+                className="bg-red-600 text-white px-3 py-1 rounded"
+              >
+                Delete
+              </button>
             </li>
           ))}
         </ul>
