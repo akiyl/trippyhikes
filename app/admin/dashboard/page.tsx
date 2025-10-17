@@ -72,7 +72,7 @@ export default async function AdminDashboard() {
       <section>
         <h2 className="text-xl font-semibold mb-2">Existing treks</h2>
         <ul className="space-y-3">
-          {treks.map((t) => (
+          {treks.map((t: any) => (
             <li
               key={t.id}
               className="flex items-center justify-between p-3 border rounded"

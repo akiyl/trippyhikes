@@ -41,6 +41,7 @@ export default function AdminUI() {
   const [trekItinerary, setTrekItinerary] = useState("");
   const [costTerms, setCostTerms] = useState("");
   const [trekEssentials, setTrekEssentials] = useState("");
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   const fetchItems = async () => {
     setLoading(true);
@@ -92,18 +93,34 @@ export default function AdminUI() {
     e.preventDefault();
     setError(null);
     setSuccess(null);
-
-    if (!imageSrc) {
-      setError("Please upload an image before creating.");
-      return;
-    }
-
     setCreating(true);
+
     try {
+      let finalImageUrl = imageSrc; // default to whatever the user typed in
+
+      // 🖼️ If a file was selected in file input, upload it
+      if (selectedFile) {
+        const formData = new FormData();
+        formData.append("file", selectedFile);
+
+        const uploadRes = await fetch("/api/upload", {
+          method: "POST",
+          body: formData,
+        });
+
+        if (uploadRes.ok) {
+          const uploadData = await uploadRes.json();
+          finalImageUrl = uploadData.url;
+        } else {
+          console.warn("⚠️ Image upload failed, continuing without image");
+        }
+      }
+
+      // Build trek data payload
       const payload: any = {
         name,
         slug,
-        imageSrc,
+        imageSrc: finalImageUrl, // ✅ use uploaded or manually provided URL
         description,
         duration,
         grade,
@@ -133,11 +150,10 @@ export default function AdminUI() {
 
       if (!res.ok) throw new Error("Create failed");
 
-      // Clear all fields
+      // Reset everything
       setName("");
       setSlug("");
       setImageSrc("");
-      setImageFile(null);
       setDescription("");
       setPrice("");
       setDuration("");
@@ -156,6 +172,7 @@ export default function AdminUI() {
       setTrekItinerary("");
       setCostTerms("");
       setTrekEssentials("");
+      setSelectedFile(null);
 
       await fetchItems();
       setSuccess("Created successfully");
@@ -163,6 +180,7 @@ export default function AdminUI() {
     } catch (e: any) {
       setError(e.message || "Error");
     }
+
     setCreating(false);
   };
 
@@ -221,11 +239,19 @@ export default function AdminUI() {
           <input
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder="Name"
+            placeholder="Image Src"
             className="w-full p-2 border rounded"
             required
             disabled={creating}
           />
+          <input
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Name"
+            className="w-full p-2 border rounded"
+            required
+            disabled={creating}
+          />{" "}
           <input
             value={slug}
             onChange={(e) => setSlug(e.target.value)}

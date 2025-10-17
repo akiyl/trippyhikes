@@ -1,4 +1,13 @@
 import { NextResponse } from "next/server";
+import { createClient } from "@supabase/supabase-js";
+import { Buffer } from "node:buffer"; // ✅ Required for Node runtime
+
+export const runtime = "nodejs"; // ✅ use Node instead of Edge
+export const config = {
+  api: {
+    bodyParser: false, // ✅ allow large uploads
+  },
+};
 
 export async function POST(req: Request) {
   try {
@@ -9,48 +18,43 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "No file provided" }, { status: 400 });
     }
 
-    // Convert the File to a Buffer
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!
+    );
+
+    const fileExt = file.name.split(".").pop();
+    const fileName = `${Date.now()}-${Math.random()
+      .toString(36)
+      .substring(2)}.${fileExt}`;
+
     const arrayBuffer = await file.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
-
-    // Upload to Cloudinary
-    const cloudName = process.env.CLOUDINARY_CLOUD_NAME!;
-    const uploadPreset = process.env.CLOUDINARY_UPLOAD_PRESET!;
-    const apiKey = process.env.CLOUDINARY_API_KEY!;
-    const apiSecret = process.env.CLOUDINARY_API_SECRET!;
-
-    // Cloudinary direct API endpoint
-    const timestamp = Math.floor(Date.now() / 1000);
-    const crypto = await import("crypto");
-    const signature = crypto
-      .createHash("sha1")
-      .update(`timestamp=${timestamp}${apiSecret}`)
-      .digest("hex");
-
-    const uploadUrl = `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`;
-
-    const form = new FormData();
-    form.append("file", new Blob([buffer]));
-    form.append("api_key", apiKey);
-    form.append("timestamp", timestamp.toString());
-    form.append("upload_preset", uploadPreset);
-    form.append("signature", signature);
-
-    const uploadRes = await fetch(uploadUrl, {
-      method: "POST",
-      body: form,
-    });
-
-    const data = await uploadRes.json();
-
-    if (!uploadRes.ok) {
-      console.error("Cloudinary Error:", data);
-      return NextResponse.json({ error: "Upload failed" }, { status: 500 });
+    const MAX_SIZE = 5 * 1024 * 1024; // 5 MB limit
+    if (arrayBuffer.byteLength > MAX_SIZE) {
+      return NextResponse.json({ error: "File too large" }, { status: 400 });
     }
 
-    return NextResponse.json({ url: data.secure_url });
+    const buffer = Buffer.from(arrayBuffer);
+
+    const { data, error } = await supabase.storage
+      .from("trek-images")
+      .upload(fileName, buffer, {
+        contentType: file.type,
+        upsert: false,
+      });
+
+    if (error) {
+      console.error("❌ Supabase upload error:", error);
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+
+    const { data: publicData } = supabase.storage
+      .from("trek-images")
+      .getPublicUrl(fileName);
+
+    return NextResponse.json({ url: publicData.publicUrl });
   } catch (err: any) {
-    console.error("Upload API error:", err);
+    console.error("❌ Upload route error:", err);
     return NextResponse.json(
       { error: err.message || "Upload failed" },
       { status: 500 }
