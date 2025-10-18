@@ -1,21 +1,8 @@
-import { createUploadthing, type FileRouter } from "uploadthing/next";
-// import { auth } from "@clerk/nextjs"; // or your auth setup (optional)
+import { createRouteHandler } from "uploadthing/next";
 
-const f = createUploadthing();
+import { ourFileRouter } from "./core";
 
-export const ourFileRouter = {
-  trekImageUploader: f({ image: { maxFileSize: "4MB" } })
-    // Optional authentication check
-    .middleware(async () => {
-      // Example: You can check if the user is an admin
-      // const user = auth();
-      // if (!user) throw new Error("Unauthorized");
-      return {};
-    })
-    .onUploadComplete(async ({ file }) => {
-      console.log("✅ File uploaded:", file.url);
-      // You can optionally store file.url in your Supabase database here.
-    }),
-} satisfies FileRouter;
-
-export type OurFileRouter = typeof ourFileRouter;
+// Export routes for Next App Router
+export const { GET, POST } = createRouteHandler({
+  router: ourFileRouter,
+});

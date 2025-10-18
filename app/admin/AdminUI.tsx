@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
+import ImageUploadButton from "@/app/components/ImageUploadButton";
 
 type Destination = {
   id: number;
@@ -212,25 +213,16 @@ export default function AdminUI() {
             disabled={creating || uploading}
             className="block w-full border p-2 rounded"
           />
-          <div className="flex gap-2">
-            <button
-              type="button"
-              onClick={uploadImage}
-              disabled={!imageFile || uploading}
-              className="bg-gray-700 text-white px-4 py-2 rounded disabled:opacity-50"
-            >
-              {uploading ? "Uploading..." : "Upload Image"}
-            </button>
+          <div className="flex flex-col gap-3">
+            <label className="font-medium">Trek Image (optional)</label>
             {imageSrc && (
-              <a
-                href={imageSrc}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-600 underline"
-              >
-                View Uploaded Image
-              </a>
+              <img
+                src={imageSrc}
+                alt="Uploaded preview"
+                className="w-48 h-32 object-cover rounded border"
+              />
             )}
+            <ImageUploadButton onUploadComplete={(url) => setImageSrc(url)} />
           </div>
         </div>
 
