@@ -3,7 +3,8 @@
 import { Destination } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
-
+import Masonry from "./ui/masonary";
+import { getDestinations } from "@/lib/getDestination";
 type Props = {
   destinations: Destination[];
 };
@@ -13,58 +14,32 @@ export default function ImageGallery({ destinations }: Props) {
     return <p className="text-center text-gray-500">No images available.</p>;
 
   // Limit the number of images displayed
-  const limitedDestinations = destinations.slice(0, 13);
-
+  const limitedDestinations = destinations.slice(0, 18);
+  const items = limitedDestinations.map((dest) => ({
+    id: String(dest.id),
+    img: dest.imageSrc,
+    url: dest.name,
+    height: dest.height,
+  }));
   return (
-    <section className="max-w-6xl mx-auto px-4 py-12">
+    <section className="w-full mx-auto px-4 py-12 overflow-x-auto">
       <h2 className="text-3xl font-bold mb-6 text-center">
         Explore Our Gallery
       </h2>
 
       {/* Masonry Layout */}
-      <div
-        className="
-          columns-1
-          sm:columns-2
-          md:columns-3
-          lg:columns-4
-          gap-4
-          space-y-4
-        "
-      >
-        {limitedDestinations.map((dest) => (
-          <div
-            key={dest.id}
-            className="relative overflow-hidden rounded-2xl break-inside-avoid group"
-          >
-            <Image
-              src={dest.imageSrc}
-              alt={dest.name}
-              width={800}
-              height={600}
-              className="
-                w-full h-auto object-cover rounded-2xl
-                transition-transform duration-300 ease-in-out
-                group-hover:scale-105
-              "
-            />
-
-            {/* Overlay */}
-            <div
-              className="
-              absolute inset-0 bg-black/40 opacity-0
-              group-hover:opacity-100 transition-opacity duration-300
-              flex flex-col justify-end p-4 rounded-2xl
-            "
-            >
-              <h3 className="text-white text-lg font-semibold">{dest.name}</h3>
-              {dest.region && (
-                <p className="text-gray-200 text-sm">{dest.region}</p>
-              )}
-            </div>
-          </div>
-        ))}
-      </div>
+      <Masonry
+        items={items}
+        ease="power3.out"
+        duration={0.6}
+        stagger={0.05}
+        animateFrom="bottom"
+        scaleOnHover={true}
+        hoverScale={0.95}
+        blurToFocus={true}
+        colorShiftOnHover={false}
+        minColumnWidth={150} // ensure each tile is at least 150px wide
+      />
 
       {/* See More Button */}
       {destinations.length > 8 && (

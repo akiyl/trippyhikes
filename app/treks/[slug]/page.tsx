@@ -1,22 +1,22 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { getDestinationBySlug } from "@/lib/getDestination";
+import { getDestinationBySlug, getDestinations } from "@/lib/getDestination";
 import TrekDetailMotion from "@/app/components/trekDetailsMotion";
 import { Star, MapPin, Calendar, Mountain } from "lucide-react";
-
-export default async function TrekDetailPage({
-  params,
-}: {
+import SchedulePlannerClient from "@/app/components/SchedulePlanner";
+type Props = {
+  params?: Promise<{ slug: string | string[] }>;
+};
+export default async function TrekDetailPage({ params }: Props) {
   // Next's generated PageProps expects params to be a Promise-resolvable shape.
   // Accept either a Promise or a plain object and await it to get the slug.
-  params?: Promise<{ slug: string | string[] }>;
-}) {
   const resolved = await params;
   const rawSlug = Array.isArray(resolved?.slug)
     ? resolved?.slug[0]
     : resolved?.slug;
   if (!rawSlug) return notFound();
   const trek = await getDestinationBySlug(String(rawSlug));
+  const destinations = await getDestinations();
 
   if (!trek) return notFound();
 
@@ -163,6 +163,12 @@ export default async function TrekDetailPage({
           </section>
         </TrekDetailMotion>
       )}
+      <section className="max-w-6xl mx-auto px-6 py-12 flex flex-col  items-center justify-center ">
+        <SchedulePlannerClient destinations={destinations} />
+        <button className=" w-[250px] h-[50px] px-1 py-2 bg-blue-400 text-white rounded-md  hover:bg-blue-500 transition">
+          book now
+        </button>
+      </section>
     </div>
   );
 }

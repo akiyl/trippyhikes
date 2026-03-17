@@ -1,10 +1,14 @@
 import PopularLocations from "./yourDestination";
 import ImageGallery from "./gallery";
 import BookYourNextTripServer from "./server/bookYourNextTreipServer";
-import WinterSpecial from "./winterTreks";
+import TrendingTreks from "./TrendingTreks";
 import Footer from "./footer";
 import { Destination } from "@prisma/client";
 import SchedulePlannerClient from "./SchedulePlanner";
+import DicedBackground from "./ui/DicedBackgroundClean";
+import AnimatedHeading from "./ui/AnimatedHeading";
+import Home from "./ui/lottieImage";
+import SvgScrollPath from "./ui/ext-scroll";
 
 type Props = {
   destinations: Destination[];
@@ -13,24 +17,30 @@ type Props = {
 export default async function DisplayPageWithPlanner({ destinations }: Props) {
   return (
     <>
-      {/* Background image */}
-      <div className="w-full h-screen sm:h-[100vh] absolute top-0 bg-cover bg-center overflow-hidden -z-10 opacity-70">
-        <img
-          className="w-[100vw] h-full object-cover"
-          src="/pexels-stywo-1054218.jpg"
-          alt="Scenic background"
-        />
+      <div>
+        <SvgScrollPath />
       </div>
-
-      <div className="flex flex-col items-center min-h-screen text-center gap-6 px-4">
+      {/* <DicedBackground imageSrc="/pexels-stywo-1054218.jpg" cols={6} rows={4} /> */}
+      <Home />
+      <div
+        className="flex flex-col items-center min-h-screen text-center gap-6
+      "
+      >
         <div className="mt-32 sm:mt-40 lg:mt-52 max-w-3xl">
-          <h1 className="text-4xl sm:text-5xl lg:text-7xl text-black font-bold leading-snug">
-            Discover. Explore. Go!
-          </h1>
-          <p className="text-base sm:text-lg lg:text-xl capitalize font-sans font-semibold text-gray-600 mt-6">
-            Explore stunning destinations, breathtaking trails and plan your
-            perfect trip today!
-          </p>
+          <AnimatedHeading
+            as="h1"
+            level={1}
+            text={"Discover. Explore. Go!"}
+            className="text-4xl sm:text-5xl lg:text-7xl text-black font-bold leading-snug"
+          />
+          <AnimatedHeading
+            as="p"
+            level={3}
+            text={
+              "Explore stunning destinations, breathtaking trails and plan your perfect trip today!"
+            }
+            className="text-base sm:text-lg lg:text-xl capitalize font-sans font-semibold text-gray-600 mt-6"
+          />
         </div>
 
         {/* 👇 Client-side interactive form */}
@@ -49,11 +59,13 @@ export default async function DisplayPageWithPlanner({ destinations }: Props) {
           </div>
         )}
 
-        <PopularLocations />
+        <PopularLocations destination={destinations} />
         <BookYourNextTripServer />
-        <WinterSpecial />
+        <TrendingTreks />
         <ImageGallery destinations={destinations} />
-        <Footer />
+        <div className="w-full mt-auto">
+          <Footer />
+        </div>
       </div>
     </>
   );

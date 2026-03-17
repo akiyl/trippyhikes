@@ -10,15 +10,15 @@ type Props = { destinations: Destination[] };
 
 export default function BookYourNextTrip({ destinations }: Props) {
   const categories = [
-    "Valley trail",
-    "Mountain trail",
-    "Wildlife",
+    "Valley trek",
+    "Summit trek",
+    "Wildlife ",
     "Frozen river trail",
   ];
-  const [activeCategory, setActiveCategory] = useState("Valley trail");
+  const [activeCategory, setActiveCategory] = useState("Valley trek");
 
   const filtered = destinations.filter(
-    (d) => d.trailType?.toLowerCase() === activeCategory.toLowerCase()
+    (d) => d.trailType?.toLowerCase() === activeCategory.toLowerCase(),
   );
 
   return (

@@ -1,5 +1,5 @@
 import Image from "next/image";
-
+import { Destination } from "@prisma/client";
 type Location = {
   name: string;
   image: string;
@@ -11,7 +11,11 @@ const locations: Location[] = [
   { name: "Kedarkantha", image: "/image/kedarkantha.jpg" },
 ];
 
-export default function PopularLocations() {
+type props = {
+  destination: Destination[];
+};
+export default function PopularLocations({ destination }: props) {
+  const filteredLocations = destination.slice(0, 3);
   return (
     <section className="max-w-6xl mx-auto px-4 py-12">
       {/* Heading */}
@@ -25,15 +29,15 @@ export default function PopularLocations() {
 
       {/* Image Grid */}
       <div className="grid md:grid-cols-3 gap-6">
-        {locations.map((loc, i) => (
+        {filteredLocations.map((dest) => (
           <div
-            key={i}
+            key={dest.id}
             className="relative rounded-xl overflow-hidden group shadow-lg"
           >
             {/* Background Image */}
             <Image
-              src={loc.image}
-              alt={loc.name}
+              src={dest.imageSrc}
+              alt={dest.name}
               width={500}
               height={400}
               className="object-cover w-full h-64 group-hover:scale-105 transition-transform duration-500"
@@ -41,7 +45,7 @@ export default function PopularLocations() {
 
             {/* Text Overlay */}
             <div className="absolute bottom-4 left-4 text-white text-2xl font-bold drop-shadow-lg">
-              {loc.name}
+              {dest.name}
             </div>
           </div>
         ))}

@@ -5,38 +5,26 @@ import { FaApple, FaGooglePlay } from "react-icons/fa";
 
 const Footer = () => {
   return (
-    <footer className="bg-black text-white py-10 w-screen">
+    <footer className="bg-black text-white py-10 w-full">
       <div className="max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 md:grid-cols-5 gap-8">
         {/* Logo & Main Links */}
         <div>
           <h2 className="text-2xl font-bold text-blue-500 mb-4">
-            goexplore<span className="text-white">.</span>
+            Travel to <span className="text-white">Himalayas</span>
           </h2>
-          <ul className="space-y-2 text-sm text-gray-300">
-            {["About", "Features", "About us", "Contact"].map((item) => (
-              <li key={item}>
-                <a
-                  href="#"
-                  className="hover:text-blue-400 transition duration-200 ease-in-out"
-                >
-                  {item}
-                </a>
-              </li>
-            ))}
-          </ul>
         </div>
 
         {/* Available Countries */}
         <div>
-          <h3 className="text-md font-semibold mb-4">Available Countries</h3>
+          <h3 className="text-md font-semibold mb-4">Available states</h3>
           <ul className="space-y-2 text-sm text-gray-400">
             {[
-              "Australia",
-              "Bangladesh",
-              "Canada",
-              "Denmark",
-              "Finland",
-              "England",
+              "Uttarakhand",
+              "Himachal Pradesh",
+              "Sikkim",
+              "Jammu & Kashmir",
+              "Arunachal Pradesh",
+              "Ladakh",
             ].map((country) => (
               <li key={country}>
                 <a
@@ -49,10 +37,10 @@ const Footer = () => {
             ))}
             <li>
               <a
-                href="#"
+                href="/treks"
                 className="text-blue-400 hover:underline transition duration-200 ease-in-out"
               >
-                More Countries +
+                More Treks +
               </a>
             </li>
           </ul>
@@ -62,18 +50,22 @@ const Footer = () => {
         <div>
           <h3 className="text-md font-semibold mb-4">Company</h3>
           <ul className="space-y-2 text-sm text-gray-400">
-            {["About", "Contact", "Trips", "Reviews", "Resources"].map(
-              (item) => (
-                <li key={item}>
-                  <a
-                    href="#"
-                    className="hover:text-blue-400 transition duration-200 ease-in-out"
-                  >
-                    {item}
-                  </a>
-                </li>
-              )
-            )}
+            {[
+              { label: "About", href: "/about" },
+
+              { label: "Trips", href: "/treks" },
+              { label: "Reviews", href: "/reviews" },
+              { label: "Gallery", href: "/discover" },
+            ].map((link) => (
+              <li key={link.label}>
+                <a
+                  href={link.href}
+                  className="hover:text-blue-400 transition duration-200 ease-in-out"
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))}
           </ul>
         </div>
 
@@ -91,7 +83,7 @@ const Footer = () => {
                     {policy}
                   </a>
                 </li>
-              )
+              ),
             )}
           </ul>
         </div>

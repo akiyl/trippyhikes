@@ -14,19 +14,20 @@ const NavBar = () => {
           {/* Logo */}
           <Link href="/" className="text-2xl font-bold">
             <h1>
-              <span className="text-blue-950">Go</span>
-              <span className="text-blue-500"> hikes</span>
+              <span className="text-blue-950">Travel</span>
+              <span className="text-blue-500"> to</span>
+              <span className="text-blue-500"> Himalayas</span>
             </h1>
           </Link>
 
           {/* Desktop Nav Links */}
-          <div className="hidden md:flex text-gray-600 text-md font-semibold gap-10">
-            <Link
+          <div className="hidden md:flex text-black-600 text-md font-semibold gap-10">
+            {/* <Link
               className="hover:underline underline-offset-2 cursor-pointer transition duration-200"
               href="/discover"
             >
               Discover
-            </Link>
+            </Link> */}
             <Link
               href="/treks"
               className="hover:underline underline-offset-2 cursor-pointer transition duration-200"
@@ -41,8 +42,8 @@ const NavBar = () => {
               About
             </Link>
             <Link
-              href={`https://wa.me/${9528277247}?text=${encodeURIComponent(
-                "Hello, I would like to get in touch with you."
+              href={`https://wa.me/${6398901953}?text=${encodeURIComponent(
+                "Hello, I would like to get in touch with you.",
               )}`}
               className="hover:underline underline-offset-2 cursor-pointer transition duration-200"
             >
@@ -93,7 +94,7 @@ const NavBar = () => {
             {
               label: "Contact Us",
               href: `https://wa.me/${9528277247}?text=${encodeURIComponent(
-                "Hello, I would like to get in touch with you."
+                "Hello, I would like to get in touch with you.",
               )}`,
             },
             { label: "About", href: "/about" },

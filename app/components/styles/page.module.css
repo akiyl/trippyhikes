@@ -1,0 +1,59 @@
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 1.5rem;
+  z-index: 2;
+}
+
+.nav a {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.section {
+  position: sticky;
+  width: 100%;
+  height: 100vh;
+  padding: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.lottieContainer {
+  position: fixed;
+  top: 65px;
+  left: 0;
+  width: 100%;
+  padding: 1.5rem;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  z-index: 3;
+}
+
+.lottie {
+  width: 10rem;
+  height: 10rem;
+  transform: translateX(2rem);
+}
+
+.heroImg {
+  width: 65%;
+  aspect-ratio: 16/9;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  transform-origin: top right;
+}
+
+.heroImg video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

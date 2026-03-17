@@ -5,7 +5,7 @@ import AdminUI from "./AdminUI";
 
 export default async function AdminPage() {
   const session = (await getServerSession(
-    authOptions as any
+    authOptions as any,
   )) as Session | null;
   if (!session || (session.user as any)?.role !== "ADMIN") {
     return (
@@ -19,7 +19,7 @@ export default async function AdminPage() {
   }
 
   return (
-    <div className="p-6 mt-20">
+    <div className="p-6 mt-20 h-full w-full bg-amber-100">
       <h1 className="text-3xl font-bold mb-4">Admin</h1>
       {/* Client-side admin UI */}
       <AdminUI />

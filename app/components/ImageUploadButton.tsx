@@ -13,7 +13,7 @@ export default function ImageUploadButton({
       endpoint="trekImageUploader"
       onClientUploadComplete={(res) => {
         if (res && res[0]?.url) {
-          onUploadComplete?.(res[0].url);
+          onUploadComplete?.(res[0].ufsUrl);
         }
       }}
       onUploadError={(error) => {
