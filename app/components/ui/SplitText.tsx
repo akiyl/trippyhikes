@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useRef } from "react";
-import gsap from "gsap";
+import { getGsap } from "./gsapClient";
 
 type Props = {
   text: string;
@@ -20,28 +20,37 @@ export default function SplitText({
   useEffect(() => {
     if (!containerRef.current) return;
 
-    const prefersReduced = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
-    if (prefersReduced) return;
+    let cleanup: (() => void) | undefined;
 
-    const items = Array.from(
-      containerRef.current.querySelectorAll<HTMLElement>(".split-item")
-    );
+    const init = async () => {
+      const gsap = await getGsap();
 
-    gsap.set(items, { y: 24, opacity: 0, willChange: "transform, opacity" });
+      const prefersReduced = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
+      if (prefersReduced) return;
 
-    const ctx = gsap.context(() => {
-      gsap.to(items, {
-        y: 0,
-        opacity: 1,
-        duration: 0.9,
-        ease: "power3.out",
-        stagger,
-      });
-    }, containerRef);
+      const items = Array.from(
+        containerRef.current!.querySelectorAll<HTMLElement>(".split-item"),
+      );
 
-    return () => ctx.revert();
+      gsap.set(items, { y: 24, opacity: 0, willChange: "transform, opacity" });
+
+      const ctx = gsap.context(() => {
+        gsap.to(items, {
+          y: 0,
+          opacity: 1,
+          duration: 0.9,
+          ease: "power3.out",
+          stagger,
+        });
+      }, containerRef);
+
+      cleanup = () => ctx.revert();
+    };
+
+    init();
+    return () => cleanup?.();
   }, [text, stagger, type]);
 
   const parts =

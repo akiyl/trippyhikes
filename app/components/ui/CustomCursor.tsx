@@ -1,27 +1,33 @@
 "use client";
 import React, { useEffect, useRef } from "react";
-import gsap from "gsap";
+import { getGsap } from "./gsapClient";
 
 export default function CustomCursor() {
   const dotRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    const dot = dotRef.current;
-    if (!dot) return;
+    const init = async () => {
+      const gsap = await getGsap();
 
-    gsap.set(dot, { xPercent: -50, yPercent: -50, scale: 0.9 });
+      const dot = dotRef.current;
+      if (!dot) return;
 
-    function move(e: MouseEvent) {
-      gsap.to(dot, {
-        x: e.clientX,
-        y: e.clientY,
-        duration: 0.18,
-        ease: "power3.out",
-      });
-    }
+      gsap.set(dot, { xPercent: -50, yPercent: -50, scale: 0.9 });
 
-    window.addEventListener("mousemove", move);
-    return () => window.removeEventListener("mousemove", move);
+      function move(e: MouseEvent) {
+        gsap.to(dot, {
+          x: e.clientX,
+          y: e.clientY,
+          duration: 0.18,
+          ease: "power3.out",
+        });
+      }
+
+      window.addEventListener("mousemove", move);
+      return () => window.removeEventListener("mousemove", move);
+    };
+
+    init();
   }, []);
 
   return (

@@ -1,9 +1,6 @@
 "use client";
 import React, { useEffect, useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
+import { getGsap, getScrollTrigger } from "./gsapClient";
 
 type Props = {
   imageSrc: string;
@@ -29,10 +26,11 @@ export default function DicedBackground({
     if (prefersReduced) return;
 
     (async () => {
-      const gsapModule = await import("gsap");
-      const gsapRuntime = gsapModule.default || gsapModule;
-      const { ScrollTrigger: ST } = await import("gsap/dist/ScrollTrigger");
-      gsapRuntime.registerPlugin(ST);
+      const [gsapRuntime, ScrollTrigger] = await Promise.all([
+        getGsap(),
+        getScrollTrigger(),
+      ]);
+      gsapRuntime.registerPlugin(ScrollTrigger);
 
       const ctx = gsapRuntime.context(() => {
         const squares: HTMLElement[] = containerRef.current
@@ -65,7 +63,7 @@ export default function DicedBackground({
           scale: 1.02,
         });
 
-        ST.refresh();
+        ScrollTrigger.refresh();
       }, containerRef);
 
       return () => ctx.revert();

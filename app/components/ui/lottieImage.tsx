@@ -3,89 +3,97 @@
 import { useEffect, useRef } from "react";
 import lottie from "lottie-web";
 import Lenis from "lenis";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { getGsap, getScrollTrigger } from "./gsapClient";
 import styles from "../styles/page.module.css";
-
-gsap.registerPlugin(ScrollTrigger);
 
 export default function Home() {
   const heroImgRef = useRef<HTMLDivElement>(null);
   const lottieRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const lenis = new Lenis();
+    const init = async () => {
+      const [gsap, ScrollTrigger] = await Promise.all([
+        getGsap(),
+        getScrollTrigger(),
+      ]);
 
-    lenis.on("scroll", ScrollTrigger.update);
+      gsap.registerPlugin(ScrollTrigger);
 
-    gsap.ticker.add((time) => {
-      lenis.raf(time * 1000);
-    });
+      const lenis = new Lenis();
 
-    gsap.ticker.lagSmoothing(0);
+      lenis.on("scroll", ScrollTrigger.update);
 
-    let scrollDirection = "down";
-    let lastScrollY = 0;
+      gsap.ticker.add((time: number) => {
+        lenis.raf(time * 1000);
+      });
 
-    lenis.on("scroll", ({ scroll }: any) => {
-      scrollDirection = scroll > lastScrollY ? "down" : "up";
-      lastScrollY = scroll;
-    });
+      gsap.ticker.lagSmoothing(0);
 
-    const heroImg = heroImgRef.current!;
-    const lottieContainer = lottieRef.current!;
+      let scrollDirection = "down";
+      let lastScrollY = 0;
 
-    const lottieAnimation = lottie.loadAnimation({
-      container: lottieContainer,
-      renderer: "svg",
-      path: "/walk.json",
-      autoplay: false,
-    });
+      lenis.on("scroll", ({ scroll }: any) => {
+        scrollDirection = scroll > lastScrollY ? "down" : "up";
+        lastScrollY = scroll;
+      });
 
-    const heroImgInitialWidth = heroImg.offsetWidth;
-    const heroImgTargetWidth = 300;
+      const heroImg = heroImgRef.current!;
+      const lottieContainer = lottieRef.current!;
 
-    ScrollTrigger.create({
-      trigger: ".hero",
-      start: "top top",
-      end: "bottom top",
-      scrub: 1,
-      onUpdate: (self) => {
-        const heroImgCurrentWidth =
-          heroImgInitialWidth -
-          self.progress * (heroImgInitialWidth - heroImgTargetWidth);
+      const lottieAnimation = lottie.loadAnimation({
+        container: lottieContainer,
+        renderer: "svg",
+        path: "/walk.json",
+        autoplay: false,
+      });
 
-        gsap.set(heroImg, { width: `${heroImgCurrentWidth}px` });
+      const heroImgInitialWidth = heroImg.offsetWidth;
+      const heroImgTargetWidth = 300;
 
-        const scrollDistance = self.scroll() - self.start;
-        const pixelsPerFrame = 3;
+      ScrollTrigger.create({
+        trigger: ".hero",
+        start: "top top",
+        end: "bottom top",
+        scrub: 1,
+        onUpdate: (self) => {
+          const heroImgCurrentWidth =
+            heroImgInitialWidth -
+            self.progress * (heroImgInitialWidth - heroImgTargetWidth);
 
-        const frame =
-          Math.floor(scrollDistance / pixelsPerFrame) %
-          lottieAnimation.totalFrames;
+          gsap.set(heroImg, { width: `${heroImgCurrentWidth}px` });
 
-        lottieAnimation.goToAndStop(frame, true);
+          const scrollDistance = self.scroll() - self.start;
+          const pixelsPerFrame = 3;
 
-        gsap.set(lottieContainer, {
-          rotateY: scrollDirection === "up" ? -180 : 0,
-        });
-      },
-    });
+          const frame =
+            Math.floor(scrollDistance / pixelsPerFrame) %
+            lottieAnimation.totalFrames;
 
-    ScrollTrigger.create({
-      trigger: ".about",
-      start: "top 30%",
-      end: "bottom top",
-      scrub: 1,
-      onUpdate: (self) => {
-        const lottieOffset = self.progress * window.innerHeight * 1.1;
+          lottieAnimation.goToAndStop(frame, true);
 
-        gsap.set(lottieContainer, {
-          y: -lottieOffset,
-          rotateY: scrollDirection === "up" ? -180 : 0,
-        });
-      },
-    });
+          gsap.set(lottieContainer, {
+            rotateY: scrollDirection === "up" ? -180 : 0,
+          });
+        },
+      });
+
+      ScrollTrigger.create({
+        trigger: ".about",
+        start: "top 30%",
+        end: "bottom top",
+        scrub: 1,
+        onUpdate: (self) => {
+          const lottieOffset = self.progress * window.innerHeight * 1.1;
+
+          gsap.set(lottieContainer, {
+            y: -lottieOffset,
+            rotateY: scrollDirection === "up" ? -180 : 0,
+          });
+        },
+      });
+    };
+
+    init();
   }, []);
 
   return (

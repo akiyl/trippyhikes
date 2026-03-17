@@ -1,52 +1,73 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Lenis from "lenis";
 import "../styles/ext.moudle.css";
-
-gsap.registerPlugin(ScrollTrigger);
 
 export default function SvgScrollPath() {
   const pathRef = useRef<SVGPathElement | null>(null);
 
   useEffect(() => {
-    const lenis = new Lenis({
-      duration: 1,
-      easing: (t) => Math.min(2, 1.001 - Math.pow(2, -10 * t)),
-      smoothWheel: true,
-    });
+    let lenis: any;
+    let ScrollTrigger: any;
+    let gsap: any;
 
-    function raf(time: any) {
-      lenis.raf(time);
+    const init = async () => {
+      const [
+        { default: gsapLib },
+        { ScrollTrigger: ScrollTriggerLib },
+        lenisModule,
+      ] = await Promise.all([
+        import("gsap"),
+        import("gsap/ScrollTrigger"),
+        import("lenis"),
+      ]);
+
+      const Lenis = lenisModule.default;
+
+      gsap = gsapLib;
+      ScrollTrigger = ScrollTriggerLib;
+      gsap.registerPlugin(ScrollTrigger);
+
+      lenis = new Lenis({
+        duration: 1,
+        easing: (t: number) => Math.min(2, 1.001 - Math.pow(2, -10 * t)),
+        smoothWheel: true,
+      });
+
+      function raf(time: any) {
+        lenis.raf(time);
+        requestAnimationFrame(raf);
+      }
+
       requestAnimationFrame(raf);
-    }
 
-    requestAnimationFrame(raf);
+      const path = pathRef.current;
+      if (!path) return;
 
-    const path = pathRef.current;
-    if (!path) return; // guard against null
+      const pathLength = path.getTotalLength();
 
-    const pathLength = path.getTotalLength();
+      path.style.strokeDasharray = String(pathLength);
+      path.style.strokeDashoffset = String(pathLength);
 
-    path.style.strokeDasharray = String(pathLength);
-    path.style.strokeDashoffset = String(pathLength);
+      gsap.to(path, {
+        strokeDashoffset: 0,
+        ease: "none",
+        duration: 5,
+        scrollTrigger: {
+          trigger: "body",
+          start: "top top",
+          end: "bottom bottom",
+          scrub: 1,
+        },
+      });
+    };
 
-    gsap.to(path, {
-      strokeDashoffset: 0,
-      ease: "none",
-      duration: 5,
-      scrollTrigger: {
-        trigger: "body",
-        start: "top top",
-        end: "bottom bottom",
-        scrub: 1,
-      },
-    });
+    init();
 
     return () => {
-      ScrollTrigger.killAll();
+      if (ScrollTrigger) {
+        ScrollTrigger.killAll();
+      }
     };
   }, []);
 

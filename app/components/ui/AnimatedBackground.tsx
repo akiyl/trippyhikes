@@ -1,9 +1,6 @@
 "use client";
 import React, { useEffect, useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
+import { getGsap, getScrollTrigger } from "./gsapClient";
 
 type Props = {
   imageSrc: string;
@@ -22,40 +19,51 @@ export default function AnimatedBackground({
   useEffect(() => {
     if (!bgRef.current) return;
 
-    const prefersReduced = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
-    if (prefersReduced) return;
+    const init = async () => {
+      const [gsap, ScrollTrigger] = await Promise.all([
+        getGsap(),
+        getScrollTrigger(),
+      ]);
 
-    const ctx = gsap.context(() => {
-      // slow ken-burns / float
-      gsap.set(bgRef.current, { scale: 1 });
-      gsap.to(bgRef.current, {
-        scale: 1.06,
-        rotation: 0.25,
-        duration: 22,
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut",
-      });
+      gsap.registerPlugin(ScrollTrigger);
 
-      // parallax scroll for inner image
-      if (imgRef.current) {
-        gsap.to(imgRef.current, {
-          scrollTrigger: {
-            trigger: imgRef.current,
-            start: "top bottom",
-            end: "bottom top",
-            scrub: 1,
-          },
-          y: -120,
-          scale: 1.03,
-          ease: "none",
+      const prefersReduced = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
+      if (prefersReduced) return;
+
+      const ctx = gsap.context(() => {
+        // slow ken-burns / float
+        gsap.set(bgRef.current, { scale: 1 });
+        gsap.to(bgRef.current, {
+          scale: 1.06,
+          rotation: 0.25,
+          duration: 22,
+          repeat: -1,
+          yoyo: true,
+          ease: "sine.inOut",
         });
-      }
-    }, bgRef);
 
-    return () => ctx.revert();
+        // parallax scroll for inner image
+        if (imgRef.current) {
+          gsap.to(imgRef.current, {
+            scrollTrigger: {
+              trigger: imgRef.current,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: 1,
+            },
+            y: -120,
+            scale: 1.03,
+            ease: "none",
+          });
+        }
+      }, bgRef);
+
+      return () => ctx.revert();
+    };
+
+    init();
   }, [imageSrc]);
 
   return (

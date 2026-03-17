@@ -1,3 +1,5 @@
+"use client";
+
 import React, {
   useEffect,
   useLayoutEffect,
@@ -12,8 +14,19 @@ const useMedia = (
   values: number[],
   defaultValue: number,
 ): number => {
-  const get = () =>
-    values[queries.findIndex((q) => matchMedia(q).matches)] ?? defaultValue;
+  const get = () => {
+    if (
+      typeof window === "undefined" ||
+      typeof window.matchMedia !== "function"
+    ) {
+      return defaultValue;
+    }
+
+    return (
+      values[queries.findIndex((q) => window.matchMedia(q).matches)] ??
+      defaultValue
+    );
+  };
 
   const [value, setValue] = useState<number>(get);
 

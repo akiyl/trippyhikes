@@ -1,9 +1,6 @@
 "use client";
 import React, { useEffect, useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
+import { getGsap, getScrollTrigger } from "./gsapClient";
 
 type Props = {
   imageSrc: string;
@@ -24,18 +21,20 @@ export default function DicedBackgroundClean({
     if (!containerRef.current) return;
 
     const prefersReduced = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
+      "(prefers-reduced-motion: reduce)",
     ).matches;
     if (prefersReduced) return;
 
     (async () => {
-      const { default: gsapRuntime } = await import("gsap");
-      const { ScrollTrigger: ST } = await import("gsap/dist/ScrollTrigger");
-      gsapRuntime.registerPlugin(ST);
+      const [gsapRuntime, ScrollTrigger] = await Promise.all([
+        getGsap(),
+        getScrollTrigger(),
+      ]);
+      gsapRuntime.registerPlugin(ScrollTrigger);
 
       const ctx = gsapRuntime.context(() => {
         const squares: HTMLElement[] = Array.from(
-          containerRef.current?.querySelectorAll(".dice-square") || []
+          containerRef.current?.querySelectorAll(".dice-square") || [],
         );
 
         gsapRuntime.to(squares, {
@@ -64,7 +63,7 @@ export default function DicedBackgroundClean({
           scale: 1.02,
         });
 
-        ST.refresh();
+        ScrollTrigger.refresh();
       }, containerRef);
 
       return () => ctx.revert();
