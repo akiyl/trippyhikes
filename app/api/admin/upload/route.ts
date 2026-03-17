@@ -3,11 +3,9 @@ import { createClient } from "@supabase/supabase-js";
 import { Buffer } from "node:buffer"; // ✅ Required for Node runtime
 
 export const runtime = "nodejs"; // ✅ use Node instead of Edge
-export const config = {
-  api: {
-    bodyParser: false, // ✅ allow large uploads
-  },
-};
+
+// Note: Next.js App Router route handlers now ignore `config` objects.
+// File uploads via `req.formData()` work without disabling body parsing.
 
 export async function POST(req: Request) {
   try {
@@ -20,7 +18,7 @@ export async function POST(req: Request) {
 
     const supabase = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.SUPABASE_SERVICE_ROLE_KEY!
+      process.env.SUPABASE_SERVICE_ROLE_KEY!,
     );
 
     const fileExt = file.name.split(".").pop();
@@ -57,7 +55,7 @@ export async function POST(req: Request) {
     console.error("❌ Upload route error:", err);
     return NextResponse.json(
       { error: err.message || "Upload failed" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
