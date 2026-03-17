@@ -6,10 +6,8 @@ import { prisma } from "@/lib/prisma";
 import { Calendar, Mountain, Star } from "lucide-react";
 import { Destination } from "@prisma/client";
 import SchedulePlannerClient from "../components/SchedulePlanner";
-type Props = {
-  destinations: Destination[];
-};
-export default async function TreksPage({ destinations }: Props) {
+
+export default async function TreksPage() {
   let treks: Destination[] = [];
   try {
     treks = await prisma.destination.findMany({
