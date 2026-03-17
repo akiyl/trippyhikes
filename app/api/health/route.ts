@@ -1,4 +1,4 @@
-import { prisma } from "@/lib/prisma";
+import { prisma } from "@/lib/prisma.js";
 
 export async function GET() {
   try {
@@ -14,7 +14,7 @@ export async function GET() {
       JSON.stringify({ ok: false, db: false, error: message }),
       {
         status: 500,
-      }
+      },
     );
   }
 }

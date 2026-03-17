@@ -1,13 +1,14 @@
 // components/TrendingTreks.tsx
-import { prisma } from "@/lib/prisma";
+import { prisma } from "@/lib/prisma.js";
+import type { Destination } from "@prisma/client";
 import Image from "next/image";
 import SplitText from "./ui/SplitText";
 import AutoSplitOnScroll from "./ui/AutoSplitOnScroll";
 
 export default async function TrendingTreks() {
-  const treks = await prisma.destination.findMany({
+  const treks = (await prisma.destination.findMany({
     where: { trailType: "Popular" },
-  });
+  })) as Destination[];
 
   // Define month order for sorting
   const monthOrder = [
@@ -26,7 +27,7 @@ export default async function TrendingTreks() {
   ];
 
   // Sort treks by month
-  const sortedTreks = treks.sort((a, b) => {
+  const sortedTreks = treks.sort((a: Destination, b: Destination) => {
     const aIndex = a.month ? monthOrder.indexOf(a.month) : -1;
     const bIndex = b.month ? monthOrder.indexOf(b.month) : -1;
     return aIndex - bIndex;

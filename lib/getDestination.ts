@@ -1,5 +1,5 @@
 // lib/data.ts
-import { prisma } from "@/lib/prisma";
+import { prisma } from "@/lib/prisma.js";
 import { cache } from "react";
 
 // 🧭 Get all destinations using Prisma

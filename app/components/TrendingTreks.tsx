@@ -1,17 +1,18 @@
 // components/TrendingTreks.tsx
 import { getDestinations } from "@/lib/getDestination";
+import type { Destination } from "@prisma/client";
 import Image from "next/image";
 import Link from "next/link";
 import SplitText from "./ui/SplitText";
 import AutoSplitOnScroll from "./ui/AutoSplitOnScroll";
 
 export default async function TrendingTreks() {
-  const allTreks = await getDestinations();
+  const allTreks = (await getDestinations()) as Destination[];
   const currentMonth = new Date().toLocaleString("default", { month: "long" });
 
   // Filter treks by current month
   const filteredTreks = allTreks.filter(
-    (trek) => trek.month && trek.month.includes(currentMonth),
+    (trek: Destination) => trek.month && trek.month.includes(currentMonth),
   );
 
   // Define month order for sorting

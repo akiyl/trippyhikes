@@ -2,7 +2,7 @@ export const dynamic = "force-dynamic";
 
 import Image from "next/image";
 import Link from "next/link";
-import { prisma } from "@/lib/prisma";
+import { prisma } from "@/lib/prisma.js";
 import { Calendar, Mountain, Star } from "lucide-react";
 import { Destination } from "@prisma/client";
 import SchedulePlannerClient from "../components/SchedulePlanner";
