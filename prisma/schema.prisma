@@ -57,3 +57,10 @@ enum Role {
   USER
   ADMIN
 }
+
+model Gallery {
+  id       String  @id @default(cuid())
+  trek     String
+  imageSrc String?
+  videoSrc String?
+}

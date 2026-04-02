@@ -417,6 +417,12 @@ export default function AdminUI() {
           ))}
         </ul>
       )}
+      <div>
+        <h1 className="text-2xl font-bold mb-4 text-black">trek gallery </h1>
+      </div>
+      <ul>
+        <li></li>
+      </ul>
     </div>
   );
 }

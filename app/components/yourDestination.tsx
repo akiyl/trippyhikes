@@ -15,13 +15,15 @@ type props = {
   destination: Destination[];
 };
 export default function PopularLocations({ destination }: props) {
-  const filteredLocations = destination.slice(0, 3);
+  const filteredLocations = destination.slice(0, 6);
   return (
-    <section className="max-w-6xl mx-auto px-4 py-12">
+    <section className="w-full h-[75vh] mx-auto px-10 py-12 my-16  ">
       {/* Heading */}
       <div className="mb-8 text-center">
-        <h2 className="text-3xl font-bold">Explore All Popular Locations</h2>
-        <p className="text-gray-600 mt-2">
+        <h2 className="text-3xl font-bold text-white">
+          Explore All Popular Locations
+        </h2>
+        <p className="text-gray-300 mt-2">
           Plan, book, and embark on your dream adventure with our expert
           guidance and tailored experiences.
         </p>

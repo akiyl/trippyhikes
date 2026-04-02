@@ -69,7 +69,7 @@ export default async function TreksPage() {
                   <Calendar className="w-3 h-3" /> {trek.duration}
                 </span>
                 <span className="flex items-center gap-1 bg-blue-500/30 text-blue-200 px-2 py-1 rounded-full font-medium">
-                  ${trek.price.toFixed(0)}
+                  ₹{trek.price.toFixed(0)}
                 </span>
               </div>
 

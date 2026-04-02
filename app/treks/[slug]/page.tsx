@@ -86,7 +86,7 @@ export default async function TrekDetailPage({ params }: Props) {
               {trek.foodStay && <li>Food & Stay: {trek.foodStay}</li>}
             </ul>
             <p className="mt-6 text-xl font-bold text-green-400">
-              Price: ${trek.price.toFixed(2)}
+              Price: ₹{trek.price.toFixed(2)}
             </p>
           </div>
         </TrekDetailMotion>

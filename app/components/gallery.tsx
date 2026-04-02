@@ -11,7 +11,7 @@ type Props = {
 
 export default function ImageGallery({ destinations }: Props) {
   if (!destinations || destinations.length === 0)
-    return <p className="text-center text-gray-500">No images available.</p>;
+    return <p className="text-center text-gray-300">No images available.</p>;
 
   // Limit the number of images displayed
   const limitedDestinations = destinations.slice(0, 18);
@@ -22,8 +22,8 @@ export default function ImageGallery({ destinations }: Props) {
     height: dest.height,
   }));
   return (
-    <section className="w-full mx-auto px-4 py-12 overflow-x-auto">
-      <h2 className="text-3xl font-bold mb-6 text-center">
+    <section className="w-full relative mx-auto px-4 py-12 overflow-x-auto">
+      <h2 className="text-3xl font-bold mb-6 text-center text-white">
         Explore Our Gallery
       </h2>
 

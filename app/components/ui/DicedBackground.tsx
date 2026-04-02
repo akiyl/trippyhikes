@@ -47,8 +47,10 @@ export default function DicedBackground({
           stagger: 0.04,
           scrollTrigger: {
             trigger: containerRef.current,
-            start: "bottom top ",
+            start: "bottom top",
             toggleActions: "play none none none",
+            once: true,
+            immediateRender: false,
           },
         });
 
@@ -72,6 +74,13 @@ export default function DicedBackground({
 
   const total = cols * rows;
 
+  const getTileOffset = (index: number) => {
+    const seed = index + cols * 31 + rows * 17;
+    const x = ((seed * 47) % 280) - 140;
+    const y = ((seed * 89) % 280) - 140;
+    return { x, y };
+  };
+
   const containerClass =
     "absolute inset-0 w-full h-screen -z-10 overflow-hidden" +
     (className ? ` ${className}` : "");
@@ -94,8 +103,7 @@ export default function DicedBackground({
           const posX = cols > 1 ? (col / (cols - 1)) * 100 : 50;
           const posY = rows > 1 ? (row / (rows - 1)) * 100 : 50;
 
-          const offsetX = Math.round((Math.random() - 0.5) * 280);
-          const offsetY = Math.round((Math.random() - 0.5) * 280);
+          const { x: offsetX, y: offsetY } = getTileOffset(i);
 
           const tileStyle: React.CSSProperties = {
             backgroundImage: `url(${imageSrc})`,

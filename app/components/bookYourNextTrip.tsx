@@ -23,7 +23,9 @@ export default function BookYourNextTrip({ destinations }: Props) {
 
   return (
     <section className="py-12 max-w-6xl mx-auto">
-      <h2 className="text-3xl font-bold mb-6">Book your Next Trip</h2>
+      <h2 className="text-3xl font-bold mb-6 text-white">
+        Book your Next Trip
+      </h2>
 
       <div className="flex gap-6 mb-8 border-b pb-2">
         {categories.map((cat) => (
@@ -32,8 +34,8 @@ export default function BookYourNextTrip({ destinations }: Props) {
             onClick={() => setActiveCategory(cat)}
             className={`pb-2 text-lg font-medium ${
               activeCategory === cat
-                ? "text-green-600 border-b-2 border-green-600"
-                : "text-gray-500 hover:text-gray-800"
+                ? "text-white border-b-2 border-white"
+                : "text-gray-300 hover:text-gray-300"
             }`}
           >
             {cat}
@@ -54,8 +56,10 @@ export default function BookYourNextTrip({ destinations }: Props) {
                 />
               </div>
               <div className="p-4">
-                <h3 className="text-lg font-semibold">{dest.name}</h3>
-                <p className="text-gray-600">{dest.region}</p>
+                <h3 className="text-lg font-semibold text-white">
+                  {dest.name}
+                </h3>
+                <p className="text-gray-300">{dest.region}</p>
               </div>
             </div>
           </Link>

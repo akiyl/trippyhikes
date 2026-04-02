@@ -20,8 +20,8 @@ export default async function DisplayPageWithPlanner({ destinations }: Props) {
       <div>
         <SvgScrollPath />
       </div>
-      {/* <DicedBackground imageSrc="/pexels-stywo-1054218.jpg" cols={6} rows={4} /> */}
-      <Home />
+      <DicedBackground imageSrc="/pexels-stywo-1054218.jpg" cols={6} rows={4} />
+      {/* <Home /> */}
       <div
         className="flex flex-col items-center min-h-screen text-center gap-6
       "

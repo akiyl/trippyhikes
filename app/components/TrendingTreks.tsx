@@ -48,7 +48,7 @@ export default async function TrendingTreks() {
         <SplitText
           text="Trending Treks"
           type="words"
-          className="text-3xl font-bold"
+          className="text-3xl font-bold text-white"
           stagger={0.1}
         />
       </div>
@@ -58,7 +58,7 @@ export default async function TrendingTreks() {
         <SplitText
           text="Discover the most sought-after adventures that adventurers can't stop talking about"
           type="words"
-          className="text-gray-600"
+          className="text-gray-300"
           stagger={0.05}
         />
       </div>
@@ -89,12 +89,14 @@ export default async function TrendingTreks() {
 
               <div className="absolute bottom-0 left-0 right-0 p-6 text-white transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
                 <h3 className="text-lg font-semibold mb-1">{trip.name}</h3>
-                <p className="text-sm opacity-90 mb-2">{trip.region}</p>
+                <p className="text-sm opacity-90 mb-2 text-gray-300">
+                  {trip.region}
+                </p>
                 <div className="flex justify-between items-center">
-                  <span className="text-xl font-bold text-green-400">
-                    ${trip.price}
+                  <span className="text-xl font-bold text-white">
+                    ₹{trip.price}
                   </span>
-                  <span className="text-xs bg-white/20 px-2 py-1 rounded-full">
+                  <span className="text-xs bg-white/20 px-2 py-1 rounded-full text-gray-300">
                     {trip.duration}
                   </span>
                 </div>
