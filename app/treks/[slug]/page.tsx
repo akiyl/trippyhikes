@@ -4,6 +4,7 @@ import { getDestinationBySlug, getDestinations } from "@/lib/getDestination";
 import TrekDetailMotion from "@/app/components/trekDetailsMotion";
 import { Star, MapPin, Calendar, Mountain } from "lucide-react";
 import SchedulePlannerClient from "@/app/components/SchedulePlanner";
+import Link from "next/link";
 type Props = {
   params?: Promise<{ slug: string | string[] }>;
 };
@@ -165,9 +166,14 @@ export default async function TrekDetailPage({ params }: Props) {
       )}
       <section className="max-w-6xl mx-auto px-6 py-12 flex flex-col  items-center justify-center ">
         <SchedulePlannerClient destinations={destinations} />
-        <button className=" w-[250px] h-[50px] px-1 py-2 bg-blue-400 text-white rounded-md  hover:bg-blue-500 transition">
+        <Link
+          className=" w-[250px] h-[50px] px-1 py-2 bg-blue-400 text-white rounded-md  hover:bg-blue-500 transition text-center text-xl uppercase tracking-widest"
+          href={`https://wa.me/${6398901953}?text=${encodeURIComponent(
+            "Hello, I would like to get in touch with you.",
+          )}`}
+        >
           book now
-        </button>
+        </Link>
       </section>
     </div>
   );
