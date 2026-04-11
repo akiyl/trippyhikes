@@ -33,14 +33,16 @@ export default async function DisplayPageWithPlanner({ destinations }: Props) {
             text={"Discover. Explore. Go!"}
             className="text-4xl sm:text-5xl lg:text-7xl text-black font-bold leading-snug"
           />
-          <AnimatedHeading
-            as="p"
-            level={3}
-            text={
-              "Explore stunning destinations, breathtaking trails and plan your perfect trip today!"
-            }
-            className="text-base sm:text-lg lg:text-xl capitalize font-sans font-semibold text-gray-600 mt-6"
-          />
+          <div className=" py-1 px-2 rounded-full  bg-white/45">
+            <AnimatedHeading
+              as="p"
+              level={3}
+              text={
+                "Explore stunning destinations, breathtaking trails and plan your perfect trip today!"
+              }
+              className="text-base sm:text-lg lg:text-xl capitalize font-sans font-semibold text-gray-800 mt-6"
+            />
+          </div>
         </div>
 
         {/* 👇 Client-side interactive form */}

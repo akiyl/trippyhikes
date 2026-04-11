@@ -11,8 +11,27 @@ type Destination = {
   description?: string;
 };
 
+type GalleryItem = {
+  id: string;
+  trek: string;
+  imageSrc?: string | null;
+  videoSrc?: string | null;
+};
+
+type ItienaryItem = {
+  id: string;
+  trek: string;
+  QuickItinerary: string;
+  DetailedItinerary: string;
+  Inclusive?: string | null;
+  Exclusion?: string | null;
+  Rent?: string | null;
+};
+
 export default function AdminUI() {
   const [items, setItems] = useState<Destination[]>([]);
+  const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([]);
+  const [itineraryItems, setItineraryItems] = useState<ItienaryItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [creating, setCreating] = useState(false);
@@ -42,14 +61,26 @@ export default function AdminUI() {
   const [trekItinerary, setTrekItinerary] = useState("");
   const [costTerms, setCostTerms] = useState("");
   const [trekEssentials, setTrekEssentials] = useState("");
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+
+  // Gallery fields
+  const [galleryTrek, setGalleryTrek] = useState("");
+  const [galleryImageSrc, setGalleryImageSrc] = useState("");
+  const [galleryVideoSrc, setGalleryVideoSrc] = useState("");
+
+  // Itinerary fields
+  const [itineraryTrek, setItineraryTrek] = useState("");
+  const [quickItinerary, setQuickItinerary] = useState("");
+  const [detailedItinerary, setDetailedItinerary] = useState("");
+  const [inclusive, setInclusive] = useState("");
+  const [exclusion, setExclusion] = useState("");
+  const [rent, setRent] = useState("");
 
   const fetchItems = async () => {
     setLoading(true);
     setError(null);
     try {
       const res = await fetch("/api/admin/treks");
-      if (!res.ok) throw new Error("Failed to load");
+      if (!res.ok) throw new Error("Failed to load treks");
       const data = await res.json();
       setItems(data || []);
     } catch (e: any) {
@@ -59,8 +90,32 @@ export default function AdminUI() {
     }
   };
 
+  const fetchGalleryItems = async () => {
+    try {
+      const res = await fetch("/api/admin/gallery");
+      if (!res.ok) throw new Error("Failed to load gallery");
+      const data = await res.json();
+      setGalleryItems(data || []);
+    } catch (e: any) {
+      console.warn(e.message || "Gallery load error");
+    }
+  };
+
+  const fetchItineraryItems = async () => {
+    try {
+      const res = await fetch("/api/admin/itienary");
+      if (!res.ok) throw new Error("Failed to load itineraries");
+      const data = await res.json();
+      setItineraryItems(data || []);
+    } catch (e: any) {
+      console.warn(e.message || "Itinerary load error");
+    }
+  };
+
   useEffect(() => {
     fetchItems();
+    fetchGalleryItems();
+    fetchItineraryItems();
   }, []);
 
   // Upload file first -> get URL
@@ -100,9 +155,9 @@ export default function AdminUI() {
       let finalImageUrl = imageSrc; // default to whatever the user typed in
 
       // 🖼️ If a file was selected in file input, upload it
-      if (selectedFile) {
+      if (imageFile) {
         const formData = new FormData();
-        formData.append("file", selectedFile);
+        formData.append("file", imageFile);
 
         const uploadRes = await fetch("/api/upload", {
           method: "POST",
@@ -155,6 +210,7 @@ export default function AdminUI() {
       setName("");
       setSlug("");
       setImageSrc("");
+      setImageFile(null);
       setDescription("");
       setPrice("");
       setDuration("");
@@ -173,7 +229,6 @@ export default function AdminUI() {
       setTrekItinerary("");
       setCostTerms("");
       setTrekEssentials("");
-      setSelectedFile(null);
 
       await fetchItems();
       setSuccess("Created successfully");
@@ -193,6 +248,108 @@ export default function AdminUI() {
       });
       if (!res.ok) throw new Error("Delete failed");
       await fetchItems();
+    } catch (e: any) {
+      setError(e.message || "Error");
+    }
+  };
+
+  const createGalleryItem = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    setSuccess(null);
+    setCreating(true);
+
+    try {
+      const payload = {
+        trek: galleryTrek,
+        imageSrc: galleryImageSrc || null,
+        videoSrc: galleryVideoSrc || null,
+      };
+
+      const res = await fetch("/api/admin/gallery", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) throw new Error("Gallery create failed");
+
+      setGalleryTrek("");
+      setGalleryImageSrc("");
+      setGalleryVideoSrc("");
+
+      await fetchGalleryItems();
+      setSuccess("Gallery item created successfully");
+      setTimeout(() => setSuccess(null), 3000);
+    } catch (e: any) {
+      setError(e.message || "Error");
+    }
+
+    setCreating(false);
+  };
+
+  const deleteGalleryItem = async (id: string) => {
+    if (!confirm("Delete this gallery item?")) return;
+    try {
+      const res = await fetch(`/api/admin/gallery?id=${id}`, {
+        method: "DELETE",
+      });
+      if (!res.ok) throw new Error("Delete failed");
+      await fetchGalleryItems();
+    } catch (e: any) {
+      setError(e.message || "Error");
+    }
+  };
+
+  const createItineraryItem = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    setSuccess(null);
+    setCreating(true);
+
+    try {
+      const payload = {
+        trek: itineraryTrek,
+        QuickItinerary: quickItinerary,
+        DetailedItinerary: detailedItinerary,
+        Inclusive: inclusive || null,
+        Exclusion: exclusion || null,
+        Rent: rent || null,
+      };
+
+      const res = await fetch("/api/admin/itienary", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) throw new Error("Itinerary create failed");
+
+      setItineraryTrek("");
+      setQuickItinerary("");
+      setDetailedItinerary("");
+      setInclusive("");
+      setExclusion("");
+      setRent("");
+
+      await fetchItineraryItems();
+      setSuccess("Itinerary item created successfully");
+      setTimeout(() => setSuccess(null), 3000);
+    } catch (e: any) {
+      setError(e.message || "Error");
+    }
+
+    setCreating(false);
+  };
+
+  const deleteItineraryItem = async (id: string) => {
+    if (!confirm("Delete this itinerary item?")) return;
+    try {
+      const res = await fetch(`/api/admin/itienary?id=${id}`, {
+        method: "DELETE",
+      });
+      if (!res.ok) throw new Error("Delete failed");
+      await fetchItineraryItems();
     } catch (e: any) {
       setError(e.message || "Error");
     }
@@ -229,11 +386,10 @@ export default function AdminUI() {
         {/* Basic Fields */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           <input
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            value={imageSrc}
+            onChange={(e) => setImageSrc(e.target.value)}
             placeholder="Image Src"
             className="w-full p-2 border rounded"
-            required
             disabled={creating}
           />
           <input
@@ -243,7 +399,7 @@ export default function AdminUI() {
             className="w-full p-2 border rounded"
             required
             disabled={creating}
-          />{" "}
+          />
           <input
             value={slug}
             onChange={(e) => setSlug(e.target.value)}
@@ -417,12 +573,162 @@ export default function AdminUI() {
           ))}
         </ul>
       )}
-      <div>
-        <h1 className="text-2xl font-bold mb-4 text-black">trek gallery </h1>
-      </div>
-      <ul>
-        <li></li>
-      </ul>
+
+      <section className="mt-10">
+        <h2 className="text-2xl font-bold mb-4">Trek Gallery</h2>
+        <form
+          onSubmit={createGalleryItem}
+          className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4 max-w-4xl"
+        >
+          <input
+            value={galleryTrek}
+            onChange={(e) => setGalleryTrek(e.target.value)}
+            placeholder="Trek name or slug"
+            className="w-full p-2 border rounded"
+            required
+            disabled={creating}
+          />
+          <input
+            value={galleryImageSrc}
+            onChange={(e) => setGalleryImageSrc(e.target.value)}
+            placeholder="Gallery image URL"
+            className="w-full p-2 border rounded"
+            disabled={creating}
+          />
+          <input
+            value={galleryVideoSrc}
+            onChange={(e) => setGalleryVideoSrc(e.target.value)}
+            placeholder="Gallery video URL"
+            className="w-full p-2 border rounded"
+            disabled={creating}
+          />
+          <button
+            type="submit"
+            className="bg-green-600 text-white px-4 py-2 rounded disabled:opacity-60 md:col-span-3"
+            disabled={creating}
+          >
+            {creating ? "Saving gallery item..." : "Create Gallery Item"}
+          </button>
+        </form>
+
+        {galleryItems.length > 0 ? (
+          <ul className="space-y-3">
+            {galleryItems.map((item) => (
+              <li key={item.id} className="p-3 border rounded">
+                <div className="font-semibold">{item.trek}</div>
+                <div className="text-sm text-gray-600">
+                  Image: {item.imageSrc || "none"}
+                </div>
+                <div className="text-sm text-gray-600">
+                  Video: {item.videoSrc || "none"}
+                </div>
+                <button
+                  onClick={() => deleteGalleryItem(item.id)}
+                  className="mt-2 bg-red-600 text-white px-3 py-1 rounded"
+                >
+                  Delete gallery item
+                </button>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <div className="text-gray-600">No gallery items yet.</div>
+        )}
+      </section>
+
+      <section className="mt-10">
+        <h2 className="text-2xl font-bold mb-4">Trek Itinerary</h2>
+        <form
+          onSubmit={createItineraryItem}
+          className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4 max-w-4xl"
+        >
+          <input
+            value={itineraryTrek}
+            onChange={(e) => setItineraryTrek(e.target.value)}
+            placeholder="Trek name or slug"
+            className="w-full p-2 border rounded"
+            required
+            disabled={creating}
+          />
+          <textarea
+            value={quickItinerary}
+            onChange={(e) => setQuickItinerary(e.target.value)}
+            placeholder="Quick itinerary"
+            className="w-full p-2 border rounded md:col-span-2"
+            required
+            disabled={creating}
+          />
+          <textarea
+            value={detailedItinerary}
+            onChange={(e) => setDetailedItinerary(e.target.value)}
+            placeholder="Detailed itinerary"
+            className="w-full p-2 border rounded md:col-span-2"
+            required
+            disabled={creating}
+          />
+          <input
+            value={inclusive}
+            onChange={(e) => setInclusive(e.target.value)}
+            placeholder="Inclusive"
+            className="w-full p-2 border rounded"
+            disabled={creating}
+          />
+          <input
+            value={exclusion}
+            onChange={(e) => setExclusion(e.target.value)}
+            placeholder="Exclusion"
+            className="w-full p-2 border rounded"
+            disabled={creating}
+          />
+          <input
+            value={rent}
+            onChange={(e) => setRent(e.target.value)}
+            placeholder="Rent"
+            className="w-full p-2 border rounded"
+            disabled={creating}
+          />
+          <button
+            type="submit"
+            className="bg-green-600 text-white px-4 py-2 rounded disabled:opacity-60 md:col-span-2"
+            disabled={creating}
+          >
+            {creating ? "Saving itinerary..." : "Create Itinerary Item"}
+          </button>
+        </form>
+
+        {itineraryItems.length > 0 ? (
+          <ul className="space-y-3">
+            {itineraryItems.map((item) => (
+              <li key={item.id} className="p-3 border rounded">
+                <div className="font-semibold">{item.trek}</div>
+                <div className="text-sm text-gray-600">
+                  Quick: {item.QuickItinerary}
+                </div>
+                <div className="text-sm text-gray-600">
+                  Detailed: {item.DetailedItinerary}
+                </div>
+                <div className="text-sm text-gray-600">
+                  Inclusive: {item.Inclusive || "none"}
+                </div>
+                <div className="text-sm text-gray-600">
+                  Exclusion: {item.Exclusion || "none"}
+                </div>
+                <div className="text-sm text-gray-600">
+                  Rent: {item.Rent || "none"}
+                </div>
+                <button
+                  onClick={() => deleteItineraryItem(item.id)}
+                  className="mt-2 bg-red-600 text-white px-3 py-1 rounded"
+                >
+                  Delete itinerary item
+                </button>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <div className="text-gray-600">No itinerary items yet.</div>
+        )}
+      </section>
     </div>
   );
 }

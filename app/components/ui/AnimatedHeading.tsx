@@ -21,9 +21,9 @@ export default function AnimatedHeading({
 
   return (
     <>
-      <Tag id={id} className={className}>
+      <div id={id} className={className}>
         <SplitServer text={text} type="words" />
-      </Tag>
+      </div>
       {/* client animator picks up the server-rendered spans */}
       <HeadingAnimator id={id} level={level} />
     </>

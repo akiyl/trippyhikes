@@ -64,3 +64,13 @@ model Gallery {
   imageSrc String?
   videoSrc String?
 }
+
+model Itienary {
+  id                String  @id @default(cuid())
+  trek              String
+  QuickItinerary    String
+  DetailedItinerary String
+  Inclusive         String?
+  Exclusion         String?
+  Rent              String?
+}
