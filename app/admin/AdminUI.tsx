@@ -356,8 +356,10 @@ export default function AdminUI() {
   };
 
   return (
-    <div className="p-6">
-      <h2 className="text-2xl font-semibold mb-4">Manage Destinations</h2>
+    <div className="p-4 md:p-6 max-w-7xl mx-auto space-y-10">
+      <h2 className="text-2xl md:text-3xl font-semibold mb-4">
+        Manage Destinations
+      </h2>
 
       <form onSubmit={createItem} className="space-y-4 mb-6 max-w-4xl">
         {/* Image upload section */}
@@ -376,7 +378,7 @@ export default function AdminUI() {
               <img
                 src={imageSrc}
                 alt="Uploaded preview"
-                className="w-48 h-32 object-cover rounded border"
+                className="w-full max-w-xs h-32 sm:h-40 object-cover rounded border"
               />
             )}
             <ImageUploadButton onUploadComplete={(url) => setImageSrc(url)} />
@@ -557,7 +559,7 @@ export default function AdminUI() {
           {items.map((it) => (
             <li
               key={it.id}
-              className="flex items-center justify-between p-3 border rounded"
+              className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-3 border rounded bg-white shadow-sm"
             >
               <div>
                 <div className="font-bold">{it.name}</div>
@@ -565,7 +567,7 @@ export default function AdminUI() {
               </div>
               <button
                 onClick={() => deleteItem(it.id)}
-                className="bg-red-600 text-white px-3 py-1 rounded"
+                className="self-start sm:self-auto bg-red-600 text-white px-3 py-1 rounded"
               >
                 Delete
               </button>
@@ -578,7 +580,7 @@ export default function AdminUI() {
         <h2 className="text-2xl font-bold mb-4">Trek Gallery</h2>
         <form
           onSubmit={createGalleryItem}
-          className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4 max-w-4xl"
+          className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4 max-w-full"
         >
           <input
             value={galleryTrek}
@@ -614,7 +616,10 @@ export default function AdminUI() {
         {galleryItems.length > 0 ? (
           <ul className="space-y-3">
             {galleryItems.map((item) => (
-              <li key={item.id} className="p-3 border rounded">
+              <li
+                key={item.id}
+                className="p-4 border rounded bg-white shadow-sm"
+              >
                 <div className="font-semibold">{item.trek}</div>
                 <div className="text-sm text-gray-600">
                   Image: {item.imageSrc || "none"}
@@ -624,7 +629,7 @@ export default function AdminUI() {
                 </div>
                 <button
                   onClick={() => deleteGalleryItem(item.id)}
-                  className="mt-2 bg-red-600 text-white px-3 py-1 rounded"
+                  className="mt-3 bg-red-600 text-white px-3 py-1 rounded"
                 >
                   Delete gallery item
                 </button>
@@ -640,7 +645,7 @@ export default function AdminUI() {
         <h2 className="text-2xl font-bold mb-4">Trek Itinerary</h2>
         <form
           onSubmit={createItineraryItem}
-          className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4 max-w-4xl"
+          className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4 max-w-full"
         >
           <input
             value={itineraryTrek}
@@ -699,7 +704,10 @@ export default function AdminUI() {
         {itineraryItems.length > 0 ? (
           <ul className="space-y-3">
             {itineraryItems.map((item) => (
-              <li key={item.id} className="p-3 border rounded">
+              <li
+                key={item.id}
+                className="p-4 border rounded bg-white shadow-sm"
+              >
                 <div className="font-semibold">{item.trek}</div>
                 <div className="text-sm text-gray-600">
                   Quick: {item.QuickItinerary}
@@ -718,7 +726,7 @@ export default function AdminUI() {
                 </div>
                 <button
                   onClick={() => deleteItineraryItem(item.id)}
-                  className="mt-2 bg-red-600 text-white px-3 py-1 rounded"
+                  className="mt-3 bg-red-600 text-white px-3 py-1 rounded"
                 >
                   Delete itinerary item
                 </button>
