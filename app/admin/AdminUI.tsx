@@ -323,7 +323,19 @@ export default function AdminUI() {
         body: JSON.stringify(payload),
       });
 
-      if (!res.ok) throw new Error("Itinerary create failed");
+      // Read response body for better error visibility
+      const raw = await res.text();
+      let parsed: any = raw;
+      try {
+        parsed = raw ? JSON.parse(raw) : raw;
+      } catch (e) {
+        // not JSON, keep raw
+      }
+      if (!res.ok) {
+        console.error("/api/admin/itienary POST failed", res.status, parsed);
+        setError(parsed?.error || parsed || "Itinerary create failed");
+        return;
+      }
 
       setItineraryTrek("");
       setQuickItinerary("");

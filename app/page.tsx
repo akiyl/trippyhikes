@@ -7,7 +7,7 @@ export default function Home() {
   return (
     <>
       {/* add scroll path SVG component */}
-      <SvgScrollPath />
+      {/* <SvgScrollPath /> */}
       <div className=" text-gray-500">
         <DestinationFetcher>
           {(destinations) => <DisplayPage destinations={destinations} />}

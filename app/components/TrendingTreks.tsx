@@ -48,7 +48,7 @@ export default async function TrendingTreks() {
         <SplitText
           text="Trending Treks"
           type="words"
-          className="text-3xl font-bold text-white"
+          className="text-3xl font-bold text-black"
           stagger={0.1}
         />
       </div>
@@ -58,7 +58,7 @@ export default async function TrendingTreks() {
         <SplitText
           text="Discover the most sought-after adventures that adventurers can't stop talking about"
           type="words"
-          className="text-gray-300"
+          className="text-black"
           stagger={0.05}
         />
       </div>

@@ -1,15 +1,5 @@
 import Image from "next/image";
 import { Destination } from "@prisma/client";
-type Location = {
-  name: string;
-  image: string;
-};
-
-const locations: Location[] = [
-  { name: "Ali Bugyal", image: "/image/ali.webp" },
-  { name: "Har ki doon", image: "/image/har-ki-doon.jpg" },
-  { name: "Kedarkantha", image: "/image/kedarkantha.jpg" },
-];
 
 type props = {
   destination: Destination[];
@@ -34,7 +24,7 @@ export default function PopularLocations({ destination }: props) {
         {filteredLocations.map((dest) => (
           <div
             key={dest.id}
-            className="relative rounded-xl overflow-hidden group shadow-lg"
+            className="relative rounded-xl overflow-hidden group shadow-lg bg-black"
           >
             {/* Background Image */}
             <Image
@@ -42,7 +32,7 @@ export default function PopularLocations({ destination }: props) {
               alt={dest.name}
               width={500}
               height={400}
-              className="object-cover w-full h-64 group-hover:scale-105 transition-transform duration-500"
+              className="object-cover w-full h-64 group-hover:scale-105 transition-transform duration-500 opacity-95"
             />
 
             {/* Text Overlay */}

@@ -2,6 +2,7 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { getDestinationBySlug, getDestinations } from "@/lib/getDestination";
 import TrekDetailMotion from "@/app/components/trekDetailsMotion";
+import { prisma } from "@/lib/prisma";
 import { Star, MapPin, Calendar, Mountain } from "lucide-react";
 import SchedulePlannerClient from "@/app/components/SchedulePlanner";
 import Link from "next/link";
@@ -18,6 +19,13 @@ export default async function TrekDetailPage({ params }: Props) {
   if (!rawSlug) return notFound();
   const trek = await getDestinationBySlug(String(rawSlug));
   const destinations = await getDestinations();
+
+  // Try to load itinerary from the Itienary model (match by slug or name)
+  const itinerary = await prisma.itienary.findFirst({
+    where: {
+      OR: [{ trek: trek?.slug ?? "" }, { trek: trek?.name ?? "" }],
+    },
+  });
 
   if (!trek) return notFound();
 
@@ -94,15 +102,50 @@ export default async function TrekDetailPage({ params }: Props) {
       </section>
 
       {/* ITINERARY, COST, ESSENTIALS, REVIEWS */}
-      {trek.trekItinerary && (
+      {(itinerary || trek.trekItinerary) && (
         <TrekDetailMotion>
           <section className="max-w-6xl mx-auto px-6 py-12">
             <h2 className="text-3xl font-semibold mb-4 text-green-400">
               Trek Itinerary
             </h2>
-            <p className="whitespace-pre-line text-gray-300 leading-relaxed">
-              {trek.trekItinerary}
-            </p>
+            {itinerary ? (
+              <div className="text-gray-300 leading-relaxed space-y-4">
+                <div>
+                  <h3 className="text-xl font-semibold">Quick Itinerary</h3>
+                  <p className="whitespace-pre-line">
+                    {itinerary.QuickItinerary}
+                  </p>
+                </div>
+                <div>
+                  <h3 className="text-xl font-semibold">Detailed Itinerary</h3>
+                  <p className="whitespace-pre-line">
+                    {itinerary.DetailedItinerary}
+                  </p>
+                </div>
+                {itinerary.Inclusive && (
+                  <div>
+                    <h4 className="font-semibold">Inclusive</h4>
+                    <p className="whitespace-pre-line">{itinerary.Inclusive}</p>
+                  </div>
+                )}
+                {itinerary.Exclusion && (
+                  <div>
+                    <h4 className="font-semibold">Exclusion</h4>
+                    <p className="whitespace-pre-line">{itinerary.Exclusion}</p>
+                  </div>
+                )}
+                {itinerary.Rent && (
+                  <div>
+                    <h4 className="font-semibold">Rent</h4>
+                    <p className="whitespace-pre-line">{itinerary.Rent}</p>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <p className="whitespace-pre-line text-gray-300 leading-relaxed">
+                no iternary
+              </p>
+            )}
           </section>
         </TrekDetailMotion>
       )}

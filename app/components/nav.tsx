@@ -22,18 +22,18 @@ const NavBar = () => {
 
           {/* Desktop Nav Links */}
           <div className="hidden md:flex text-black-600 text-md font-semibold gap-10">
-            {/* <Link
-              className="hover:underline underline-offset-2 cursor-pointer transition duration-200"
-              href="/discover"
-            >
-              Discover
-            </Link> */}
             <Link
               href="/treks"
               className="hover:underline underline-offset-2 cursor-pointer transition duration-200"
             >
               {" "}
               Treks
+            </Link>
+            <Link
+              className="hover:underline underline-offset-2 cursor-pointer transition duration-200"
+              href="/gallery"
+            >
+              Gallery
             </Link>
             <Link
               href="/about"

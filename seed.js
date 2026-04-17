@@ -12,13 +12,14 @@ const prisma = new PrismaClient({
 
 // Load seed data
 const data = JSON.parse(fs.readFileSync("./himalayan_treks.json", "utf8"));
+const itineraryData = JSON.parse(fs.readFileSync("./prisma/itnary.json", "utf8"));
 
 function randomHeight() {
      const heights = [250, 200, 600];
      return heights[Math.floor(Math.random() * heights.length)];
 }
 
-async function seed() {
+async function seedDestinations() {
      const now = new Date();
 
      // Add timestamps to each record
@@ -31,12 +32,33 @@ async function seed() {
 
      console.log(`⛰️  Inserting ${withTimestamps.length} destinations...`);
 
+     const inserted = await prisma.destination.createMany({
+          data: withTimestamps,
+          skipDuplicates: true,
+     });
+
+     console.log(`✅ Inserted ${inserted.count} treks successfully!`);
+}
+
+async function seedItineraries() {
+     console.log(`📌 Seeding ${itineraryData.length} itinerary records...`);
+
+     let insertedCount = 0;
+     for (const item of itineraryData) {
+          const exists = await prisma.itienary.findFirst({ where: { trek: item.trek } });
+          if (exists) continue;
+
+          await prisma.itienary.create({ data: item });
+          insertedCount += 1;
+     }
+
+     console.log(`✅ Inserted ${insertedCount} itinerary records.`);
+}
+
+async function seed() {
      try {
-          const inserted = await prisma.destination.createMany({
-               data: withTimestamps,
-               skipDuplicates: true,
-          });
-          console.log(`✅ Inserted ${inserted.count} treks successfully!`);
+          await seedDestinations();
+          await seedItineraries();
      } catch (error) {
           console.error("❌ Error inserting:", error.message || error);
           throw error;

@@ -1,0 +1,58 @@
+[
+  {
+    "trek": "Har Ki Dun Trek",
+    "QuickItinerary": "Day 1: Dehradun to Sankri...\nDay 7: Drive back to Dehradun",
+    "DetailedItinerary": "Day 1: Drive from Dehradun to Sankri...\nDay 6: Trek to Taluka, drive to Sankri",
+    "Inclusive": "Accommodation: Guest house, homestay, or camping (twin sharing basis).",
+    "Exclusion": "Meals during road journeys, Insurance, Personal expenses, Anything not mentioned.",
+    "Rent": "Trekking gear available on rent: trekking shoes, backpacks, trekking poles, jackets, gloves, and headlamps. High-quality equipment provided at affordable daily rates."
+  },
+  {
+    "trek": "Hampta Pass Trek",
+    "QuickItinerary": "Day 1: Manali to Jobra...\nDay 5: Drive back to Manali",
+    "DetailedItinerary": "Day 1 – Manali to Jobra...\nDay 5 – Return to Manali",
+    "Inclusive": "Accommodation, Meals, Trek Equipment, Permits, Medical Support, Trek Team, Transport, Mules/Porters.",
+    "Exclusion": "Meals during road journeys, Insurance, Personal expenses, Anything not mentioned.",
+    "Rent": "Optional rental gear includes trekking shoes, warm layers, waterproof jackets, rucksacks, and trekking poles. All equipment is sanitized and suited for high-altitude trekking."
+  },
+  {
+    "trek": "Kuari Pass Trek",
+    "QuickItinerary": "Day 1: Haridwar to Dhak...\nDay 6: Return to Haridwar",
+    "DetailedItinerary": "Day 1: Drive from Haridwar to Dhak...\nDay 6: Return to Haridwar",
+    "Inclusive": "Accommodation, Meals, Trek Equipment, Permits, Medical Support, Trek Team, Transport, Mules/Porters.",
+    "Exclusion": "Meals during road journeys, Insurance, Personal expenses, Anything not mentioned.",
+    "Rent": "Gear rental available including jackets, gloves, trekking poles, shoes, and backpacks. Ideal for beginners who don’t own trekking equipment."
+  },
+  {
+    "trek": "Valley of Flowers Trek",
+    "QuickItinerary": "Day 1: Haridwar to Govindghat...\nDay 7: Drive back to Haridwar",
+    "DetailedItinerary": "Day 1: Haridwar to Govindghat...\nDay 7: Drive back to Haridwar",
+    "Inclusive": "Accommodation, Meals, Trek Equipment, Permits, Medical Support, Trek Team, Transport, Mules/Porters.",
+    "Exclusion": "Meals during road journeys, Insurance, Personal expenses, Anything not mentioned.",
+    "Rent": "Basic trekking gear like raincoats, ponchos, backpacks, and walking sticks available for rent, especially useful during monsoon treks."
+  },
+  {
+    "trek": "Roopkund Trek",
+    "QuickItinerary": "Day 1: Dehradun to Lohajung...\nDay 6: Return journey",
+    "DetailedItinerary": "Day 1: Rishikesh/Dehradun to Lohajung...\nDay 6: Return to Dehradun",
+    "Inclusive": "Accommodation, Meals, Trek Equipment, Permits, Medical Support, Trek Team, Transport, Mules/Porters.",
+    "Exclusion": "Meals during road journeys, Insurance, Personal expenses, Anything not mentioned.",
+    "Rent": "Complete trekking kits available on rent including insulated jackets, gloves, caps, trekking poles, and backpacks suitable for meadow and high-altitude trekking."
+  },
+  {
+    "trek": "Brahmatal Trek",
+    "QuickItinerary": "Day 1: Rishikesh to Lohajung...\nDay 7: Drive back",
+    "DetailedItinerary": "Day 1: Rishikesh to Lohajung...\nDay 7: Return to Rishikesh",
+    "Inclusive": "Accommodation, Meals, Trek Equipment, Permits, Medical Support, Trek Team, Transport, Mules/Porters.",
+    "Exclusion": "Meals during road journeys, Insurance, Personal expenses, Anything not mentioned.",
+    "Rent": "Snow trekking gear available for rent including microspikes, gaiters, heavy jackets, gloves, and waterproof shoes for winter conditions."
+  },
+  {
+    "trek": "Kashmir Great Lakes Trek",
+    "QuickItinerary": "Day 1: Srinagar to Sonamarg...\nDay 8: Return to Srinagar",
+    "DetailedItinerary": "Day 1: Arrival at Sonamarg...\nDay 8: Gangbal to Naranag",
+    "Inclusive": "Accommodation, Meals, Trek Equipment, Permits, Medical Support, Trek Team, Transport, Mules/Porters.",
+    "Exclusion": "Meals during road journeys, Insurance, Personal expenses, Anything not mentioned.",
+    "Rent": "High-altitude trekking gear available including premium tents, sleeping bags, backpacks, trekking poles, and layered clothing for extreme weather conditions."
+  }
+]
