@@ -6,25 +6,34 @@ import gsap from "gsap";
 import Link from "next/link";
 import type { Destination } from "@prisma/client";
 
-const TrekSliderGSAP = () => {
+type TrekSliderProps = {
+  destinations?: Destination[];
+};
+
+const TrekSliderGSAP = ({ destinations }: TrekSliderProps) => {
   const [index, setIndex] = useState(0);
-  const [treks, setTreks] = useState<Destination[]>([]);
+  const [treks, setTreks] = useState<Destination[]>(destinations ?? []);
   const slidesRef = useRef<HTMLDivElement[]>([]);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
+    if (destinations) {
+      setTreks(destinations);
+      return;
+    }
+
     const loadDestinations = async () => {
       try {
         const response = await fetch("/api/destinations");
         const data: Destination[] = await response.json();
-        setTreks(data);
+        setTreks(data.slice(0, 7));
       } catch (error) {
         console.error("[TrekSliderGSAP] Failed to load destinations:", error);
       }
     };
 
     loadDestinations();
-  }, []);
+  }, [destinations]);
 
   const animateSlide = (newIndex: number, direction: number) => {
     const current = slidesRef.current[index];
