@@ -106,14 +106,14 @@ const TrekSliderGSAP = ({ destinations }: TrekSliderProps) => {
 
   if (treks.length === 0) {
     return (
-      <section className="relative w-full h-screen bg-black text-white flex items-center justify-center">
+      <section className="relative w-full min-h-[70vh] bg-black text-white flex items-center justify-center px-4 py-10">
         <p>Loading trek images...</p>
       </section>
     );
   }
 
   return (
-    <section className="relative w-full h-screen bg-black overflow-hidden text-white">
+    <section className="relative w-full min-h-[80vh] sm:min-h-[85vh] bg-black overflow-hidden text-white">
       {treks.map((trek, i) => (
         <div
           key={trek.id}
@@ -132,28 +132,28 @@ const TrekSliderGSAP = ({ destinations }: TrekSliderProps) => {
 
           <div className="absolute inset-0 bg-black/60" />
 
-          <div className="relative z-10 h-full flex items-center px-25 pt-35 ">
+          <div className="relative z-10 h-full flex items-center px-4 py-14 sm:px-6 lg:px-16">
             <div className="max-w-3xl space-y-4">
-              <h2 className="text-anim text-4xl md:text-6xl font-light">
+              <h2 className="text-anim text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light">
                 {trek.name}
               </h2>
 
-              <p className="text-anim text-lg text-gray-300">
+              <p className="text-anim text-base sm:text-lg text-gray-300">
                 <span className="text-white">Duration:</span> {trek.duration}
               </p>
 
-              <p className="text-anim text-lg text-gray-300">
+              <p className="text-anim text-base sm:text-lg text-gray-300">
                 <span className="text-white">Region:</span> {trek.region}
               </p>
 
-              <p className="text-anim flex items-center gap-2 text-gray-300">
+              <p className="text-anim flex items-center gap-2 text-gray-300 text-sm sm:text-base">
                 <MapPin size={18} />
                 {trek.region}
               </p>
 
               <Link
                 href={`/treks/${trek.slug}`}
-                className="text-anim mt-4 px-6 py-3 border border-white rounded-lg hover:bg-white hover:text-black transition"
+                className="text-anim mt-4 inline-block rounded-lg border border-white px-5 py-3 text-sm sm:text-base transition hover:bg-white hover:text-black"
               >
                 View Trek Details
               </Link>
@@ -164,14 +164,14 @@ const TrekSliderGSAP = ({ destinations }: TrekSliderProps) => {
 
       <button
         onClick={prevSlide}
-        className="absolute left-6 top-1/2 z-20 -translate-y-1/2 bg-white/20 p-3 rounded-full backdrop-blur-md hover:bg-white/40"
+        className="absolute left-3 top-1/2 z-20 -translate-y-1/2 rounded-full bg-white/20 p-3 backdrop-blur-md transition hover:bg-white/40 sm:left-6"
       >
         <ChevronLeft />
       </button>
 
       <button
         onClick={nextSlide}
-        className="absolute right-6 top-1/2 -translate-y-1/2 bg-white/20 p-3 rounded-full backdrop-blur-md hover:bg-white/40"
+        className="absolute right-3 top-1/2 z-20 -translate-y-1/2 rounded-full bg-white/20 p-3 backdrop-blur-md transition hover:bg-white/40 sm:right-6"
       >
         <ChevronRight />
       </button>

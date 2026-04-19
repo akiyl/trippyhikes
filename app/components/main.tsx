@@ -114,10 +114,9 @@ export default function NewHome() {
   }, []);
 
   return (
-    <main className=" text-[#1a1a1a]">
-      {/* HERO */}{" "}
-      <div>
-        <div className="absolute w-screen h-screen top-0 -z-10 opacity-45">
+    <main className="text-[#1a1a1a]">
+      <div ref={heroImage} className="relative overflow-hidden">
+        <div className="absolute inset-0 -z-10 opacity-60">
           <video
             autoPlay
             muted
@@ -128,45 +127,53 @@ export default function NewHome() {
             <source src="/hero.mp4" type="video/mp4" />
           </video>
         </div>
-        <div className="hero-title">
-          <div className="flex flex-col h-screen  items-start  space-y-0 leading-30 ml-15   text-9xl font-neue mt-50 ">
-            <div className="w-[900px] text-white">
-              <div>
-                <span>
-                  <span className="swap-text" ref={textEl}>
-                    {words[0]}
-                  </span>
-                </span>
-              </div>
-              <div className=" flex justify-center">THE</div>
-              <div>HIMALAYAS</div>
+
+        <div className="relative z-10 flex min-h-[70vh] items-center px-4 py-20 sm:px-6 sm:py-24 lg:px-12">
+          <div className="max-w-6xl text-white">
+            <div className="mb-6 text-sm uppercase tracking-[0.45em] text-blue-100/80">
+              Adventure Awaits
             </div>
+            <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold leading-tight tracking-tight">
+              <span className="block">{words[0]}</span>
+              <span className="block">THE</span>
+              <span className="block">HIMALAYAS</span>
+            </h1>
+            <p className="mt-6 max-w-2xl text-base sm:text-lg text-slate-100/90 leading-8">
+              Discover immersive treks, unforgettable camps, and curated
+              wilderness journeys built to fit every traveler.
+            </p>
           </div>
         </div>
-        {/* <div className="home-transition-overlay" aria-hidden="true"></div> */}
       </div>
+
       <ImageLayout />
-      <div className="text-white h-[50vh] w-full px-20 mt-35 flex gap-8 flex-col">
-        <h1 className="text-6xl">Why us?</h1>
-        <h2 className="text-2xl tracking-wider">
-          {" "}
-          because it's not about the location it's the experience that
-          matters{" "}
-        </h2>
-        <p className="text-xl leading-10 tracking-wider">
-          {" "}
-          We craft adventures that become unforgettable journeys along your
-          memory lane. From snow-covered peaks to lush, vibrant valleys, we
-          guide you every step of the way with care and expertise. Each
-          experience is thoughtfully designed to connect you with nature,
-          inspire a sense of wonder, and create lasting memories that stay with
-          you long after the journey ends.
-        </p>
-      </div>
-      <div>
-        {" "}
-        <TrekSliderGSAP />
-      </div>
+
+      <section className="bg-slate-900 text-white w-full px-4 py-16 sm:px-6 lg:px-12">
+        <div className="mx-auto max-w-6xl space-y-8">
+          <div>
+            <h2 className="text-4xl sm:text-5xl font-semibold">Why us?</h2>
+            <p className="mt-4 max-w-3xl text-base sm:text-lg leading-8 text-slate-300">
+              It’s not just about the place; it’s about the experience. We
+              design every journey to be inspiring, safe, and deeply memorable.
+            </p>
+          </div>
+
+          <div className="space-y-4 text-slate-200 text-base sm:text-lg leading-8">
+            <p>
+              We craft adventures that become unforgettable journeys along your
+              memory lane. From snow-covered peaks to lush, vibrant valleys, we
+              guide you every step of the way with care and expertise.
+            </p>
+            <p>
+              Each experience is thoughtfully designed to connect you with
+              nature, inspire a sense of wonder, and create lasting memories
+              long after the trek ends.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <TrekSliderGSAP />
     </main>
   );
 }
