@@ -6,16 +6,16 @@ import { FaApple, FaGooglePlay } from "react-icons/fa";
 const Footer = () => {
   return (
     <footer className="bg-black text-white py-10 w-full">
-      <div className="max-w-7xl mx-auto px-4 md:px-8 grid grid-cols-1 md:grid-cols-5 gap-8">
+      <div className="max-w-7xl mx-auto px-4 md:px-8 flex flex-col md:grid md:grid-cols-4 gap-8">
         {/* Logo & Main Links */}
-        <div>
+        <div className="text-center md:text-left">
           <h2 className="text-2xl font-bold text-blue-500 mb-4">
             Travel to <span className="text-white">Himalayas</span>
           </h2>
         </div>
 
         {/* Available Countries */}
-        <div>
+        <div className="text-center md:text-left">
           <h3 className="text-md font-semibold mb-4">Available states</h3>
           <ul className="space-y-2 text-sm text-gray-400">
             {[
@@ -47,7 +47,7 @@ const Footer = () => {
         </div>
 
         {/* Company */}
-        <div>
+        <div className="text-center md:text-left">
           <h3 className="text-md font-semibold mb-4">Company</h3>
           <ul className="space-y-2 text-sm text-gray-400">
             {[
@@ -70,7 +70,7 @@ const Footer = () => {
         </div>
 
         {/* Policies */}
-        <div>
+        <div className="text-center md:text-left">
           <h3 className="text-md font-semibold mb-4">Policies</h3>
           <ul className="space-y-2 text-sm text-gray-400">
             {["Privacy", "Cookies", "Terms of use", "Terms & Conditions"].map(
@@ -87,6 +87,11 @@ const Footer = () => {
             )}
           </ul>
         </div>
+      </div>
+
+      {/* Copyright Section */}
+      <div className="mt-8 border-t border-gray-700 pt-4 text-center text-xs text-gray-500">
+        © 2026 Travel to Himalayas. All rights reserved.
       </div>
     </footer>
   );

@@ -207,6 +207,7 @@ export default function AdminUI() {
       if (!res.ok) throw new Error("Create failed");
 
       // Reset everything
+
       setName("");
       setSlug("");
       setImageSrc("");

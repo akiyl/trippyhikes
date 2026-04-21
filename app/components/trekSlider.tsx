@@ -15,6 +15,8 @@ const TrekSliderGSAP = ({ destinations }: TrekSliderProps) => {
   const [treks, setTreks] = useState<Destination[]>(destinations ?? []);
   const slidesRef = useRef<HTMLDivElement[]>([]);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const touchStartX = useRef<number | null>(null);
+  const touchEndX = useRef<number | null>(null);
 
   useEffect(() => {
     if (destinations) {
@@ -92,6 +94,29 @@ const TrekSliderGSAP = ({ destinations }: TrekSliderProps) => {
     setIndex(newIndex);
   };
 
+  // Swipe handlers for mobile
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.targetTouches[0].clientX;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    touchEndX.current = e.targetTouches[0].clientX;
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStartX.current || !touchEndX.current) return;
+    const distance = touchStartX.current - touchEndX.current;
+    const isLeftSwipe = distance > 50;
+    const isRightSwipe = distance < -50;
+    if (isLeftSwipe) {
+      nextSlide();
+    } else if (isRightSwipe) {
+      prevSlide();
+    }
+    touchStartX.current = null;
+    touchEndX.current = null;
+  };
+
   useEffect(() => {
     if (treks.length <= 1) return;
 
@@ -113,7 +138,12 @@ const TrekSliderGSAP = ({ destinations }: TrekSliderProps) => {
   }
 
   return (
-    <section className="relative w-full min-h-[80vh] sm:min-h-[85vh] bg-black overflow-hidden text-white">
+    <section
+      className="relative w-full min-h-[80vh] sm:min-h-[85vh] bg-black overflow-hidden text-white"
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+    >
       {treks.map((trek, i) => (
         <div
           key={trek.id}
