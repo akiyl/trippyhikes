@@ -131,6 +131,7 @@ export default function NewHome({ destinations }: Props) {
             className="w-full h-full object-cover"
           >
             <source src="/hero2.mp4" type="video/mp4" />
+            {/* homehero2 */}
           </video>
         </div>
 
