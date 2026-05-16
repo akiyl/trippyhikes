@@ -50,7 +50,7 @@ const NavBar = () => {
           <Link href="/" className="flex  leading-tight items-center">
             <span className="text-sm md:text-md uppercase tracking-[0.35em] text-gray-200">
               <img
-                className="w-10 h-10 object-cover"
+                className="w-17 h-12 object-cover pt-2"
                 src="./images/t2h2.png"
                 alt="TrekToHim Logo"
               />
