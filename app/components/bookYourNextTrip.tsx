@@ -12,22 +12,28 @@ export default function BookYourNextTrip({ destinations }: Props) {
   const categories = [
     "Valley trek",
     "Summit trek",
-    "Wildlife",
-    "Frozen river trail",
+    "Summer ",
+    "Winter ",
+    "Monsoon ",
+    "solo trek",
+    "family trek",
+    ,
+    "PanchKedaar trek",
+    "college trek",
   ];
   const [activeCategory, setActiveCategory] = useState("Valley trek");
 
   const filtered = destinations.filter(
-    (d) => d.trailType?.toLowerCase() === activeCategory.toLowerCase(),
+    (d) => d.season?.toLowerCase() === activeCategory.toLowerCase(),
   );
 
   return (
-    <section className="py-12 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 z-900 text-black">
+    <section className="py-12 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 z-900 text-white">
       <h2 className="text-3xl sm:text-4xl font-bold mb-6">
         Book your Next Trip
       </h2>
 
-      <div className="flex flex-wrap gap-3 mb-8 border-b border-slate-200 pb-2 overflow-x-auto">
+      <div className="flex flex-wrap gap-5 mb-8 border-b border-yellow-300 pb-2 overflow-x-auto">
         {categories.map((cat) => (
           <button
             key={cat}
@@ -35,7 +41,7 @@ export default function BookYourNextTrip({ destinations }: Props) {
             className={`min-w-fit pb-2 text-base sm:text-lg font-medium transition ${
               activeCategory === cat
                 ? "text-white border-b-2 border-white"
-                : "text-slate-700 hover:text-slate-900"
+                : "text-white hover:text-gray-300"
             }`}
           >
             {cat}

@@ -4,17 +4,23 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import ImageLayout from "./explore";
 import TrekSliderGSAP from "./trekSlider";
-
+import SchedulePlannerClient from "./SchedulePlanner";
+import { Book } from "lucide-react";
+import BookYourNextTrip from "./bookYourNextTrip";
+import { Destination } from "@prisma/client";
 gsap.registerPlugin(ScrollTrigger);
 
-export default function NewHome() {
+type Props = {
+  destinations?: Destination[];
+};
+
+export default function NewHome({ destinations }: Props) {
   const words = ["EXPERIENCE", "TRAVEL", "EXPLORE"];
   const textEl = useRef<HTMLSpanElement | null>(null);
   const heroImage = useRef(null);
   const storySection = useRef(null);
   const horizontal = useRef(null);
   const indexRef = useRef(0);
-
   useEffect(() => {
     swapLoop();
   }, []);
@@ -124,11 +130,11 @@ export default function NewHome() {
             preload="auto"
             className="w-full h-full object-cover"
           >
-            <source src="/hero.mp4" type="video/mp4" />
+            <source src="/hero2.mp4" type="video/mp4" />
           </video>
         </div>
 
-        <div className="relative z-10 flex min-h-[70vh] items-center px-4 py-20 sm:px-6 sm:py-24 lg:px-12">
+        <div className="relative z-10 flex min-h-[50vh] items-center px-4 py-20 sm:px-6 sm:py-24 lg:px-12">
           <div className="max-w-6xl text-white">
             <div className="mb-6 text-sm uppercase tracking-[0.45em] text-blue-100/80">
               Adventure Awaits
@@ -145,7 +151,12 @@ export default function NewHome() {
           </div>
         </div>
       </div>
-
+      <div>
+        <SchedulePlannerClient />
+      </div>
+      <div>
+        <BookYourNextTrip destinations={destinations} />
+      </div>
       <ImageLayout />
 
       <section className="bg-slate-900 text-white w-full px-4 py-16 sm:px-6 lg:px-12">

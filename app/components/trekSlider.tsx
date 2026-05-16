@@ -160,23 +160,24 @@ const TrekSliderGSAP = ({ destinations }: TrekSliderProps) => {
             className="absolute inset-0 w-full h-full object-cover"
           />
 
-          <div className="absolute inset-0 bg-black/60" />
+          <div className="absolute inset-0 bg-black/30 " />
 
-          <div className="relative z-10 h-full flex items-center px-4 py-14 sm:px-6 lg:px-16">
-            <div className="max-w-3xl space-y-4">
+          <div className="relative z-10 h-full flex items-center px-4 py-14 sm:px-6 lg:px-16 text-yellow-300 ">
+            <div className="max-w-3xl space-y-4 ">
               <h2 className="text-anim text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light">
                 {trek.name}
               </h2>
 
-              <p className="text-anim text-base sm:text-lg text-gray-300">
-                <span className="text-white">Duration:</span> {trek.duration}
+              <p className="text-anim text-base sm:text-lg text-yellow-300 ">
+                <span className="text-yellow-300">Duration:</span>{" "}
+                {trek.duration}
               </p>
 
-              <p className="text-anim text-base sm:text-lg text-gray-300">
-                <span className="text-white">Region:</span> {trek.region}
+              <p className="text-anim text-base sm:text-lg text-yellow-300">
+                <span className="text-yellow-300">Region:</span> {trek.region}
               </p>
 
-              <p className="text-anim flex items-center gap-2 text-gray-300 text-sm sm:text-base">
+              <p className="text-anim flex items-center gap-2 text-yellow-300 text-sm sm:text-base">
                 <MapPin size={18} />
                 {trek.region}
               </p>

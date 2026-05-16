@@ -2,215 +2,115 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Destination } from "@prisma/client";
-import { CalendarDays, MapPin, Users } from "lucide-react";
 
-type Props = {
-  destinations: Destination[];
+const activitiesList = ["Hiking", "Camping", "Photography", "Wildlife"];
+
+const activityToDestinationMap: Record<string, string[]> = {
+  Hiking: ["Manali", "Kasol", "Uttarakhand"],
+  Camping: ["Rishikesh", "Spiti"],
+  Photography: ["Ladakh", "Zanskar"],
+  Wildlife: ["Jim Corbett", "Kaziranga"],
 };
 
-export default function SchedulePlannerClient({ destinations }: Props) {
-  const [activeField, setActiveField] = useState<string | null>(null);
+export default function Planner() {
+  const [open, setOpen] = useState(false);
+  const [activities, setActivities] = useState<string[]>([]);
   const [destination, setDestination] = useState("");
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
-  const [people, setPeople] = useState(1);
-  const [loading, setLoading] = useState(false);
-  const [results, setResults] = useState<{ hotels: any[]; food: any[] }>({
-    hotels: [],
-    food: [],
-  });
+  const [suggested, setSuggested] = useState<string[]>([]);
 
-  async function handleSearch(e: React.FormEvent) {
-    e.preventDefault();
-    setLoading(true);
-    setTimeout(() => {
-      setResults({
-        hotels: [
-          { name: "Everest View Hotel", price: "₹2500/night" },
-          { name: "Himalaya Lodge", price: "₹1800/night" },
-        ],
-        food: [
-          { name: "Mountain Café", type: "Local Cuisine" },
-          { name: "Trail Diner", type: "Fast Snacks" },
-        ],
-      });
-      setLoading(false);
-    }, 1000);
-  }
+  const toggleActivity = (a: string) => {
+    setActivities((prev) =>
+      prev.includes(a) ? prev.filter((x) => x !== a) : [...prev, a],
+    );
+  };
 
-  const toggleField = (field: string) => {
-    setActiveField(activeField === field ? null : field);
+  const suggest = () => {
+    const res = activities.flatMap((a) => activityToDestinationMap[a] || []);
+    setSuggested([...new Set(res)]);
   };
 
   return (
-    <form
-      onSubmit={handleSearch}
-      className="bg-white/80 backdrop-blur-md rounded-2xl shadow-xl px-6 py-8 sm:px-10 mb-40 text-gray-800 max-w-3xl mx-auto"
-    >
-      {/* Icons Row */}
-      <div className="flex justify-center sm:justify-between items-center gap-6 mb-6 flex-wrap">
-        <button
-          type="button"
-          onClick={() => toggleField("destination")}
-          className={`p-3 rounded-full border-2 transition-all ${
-            activeField === "destination"
-              ? "bg-blue-100 border-blue-500"
-              : "border-gray-300 hover:bg-gray-100"
-          }`}
+    <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50">
+      {/* COLLAPSED BAR */}
+      {!open && (
+        <motion.button
+          onClick={() => setOpen(true)}
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="px-6 py-3 rounded-full bg-white/10 backdrop-blur-xl border border-white/10 text-white shadow-xl hover:scale-105 transition"
         >
-          <MapPin className="w-6 h-6 text-gray-600" />
-        </button>
+          ✨ Plan your trip
+        </motion.button>
+      )}
 
-        <button
-          type="button"
-          onClick={() => toggleField("dates")}
-          className={`p-3 rounded-full border-2 transition-all ${
-            activeField === "dates"
-              ? "bg-blue-100 border-blue-500"
-              : "border-gray-300 hover:bg-gray-100"
-          }`}
-        >
-          <CalendarDays className="w-6 h-6 text-gray-600" />
-        </button>
-
-        <button
-          type="button"
-          onClick={() => toggleField("people")}
-          className={`p-3 rounded-full border-2 transition-all ${
-            activeField === "people"
-              ? "bg-blue-100 border-blue-500"
-              : "border-gray-300 hover:bg-gray-100"
-          }`}
-        >
-          <Users className="w-6 h-6 text-gray-600" />
-        </button>
-      </div>
-
-      {/* Animated Fields */}
+      {/* EXPANDED PANEL */}
       <AnimatePresence>
-        {activeField === "destination" && (
+        {open && (
           <motion.div
-            key="destination"
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            className="overflow-hidden"
+            initial={{ opacity: 0, y: 80, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 40, scale: 0.95 }}
+            className="w-[90vw] sm:w-[500px] bg-white/5 backdrop-blur-2xl border border-white/10 rounded-3xl shadow-2xl p-6 text-white"
           >
-            <div className="border rounded-xl px-4 py-3 bg-white shadow-sm mb-4">
-              <label className="block text-sm font-medium text-gray-600 mb-1">
-                Choose Destination
-              </label>
-              <select
-                required
-                value={destination}
-                onChange={(e) => setDestination(e.target.value)}
-                className="w-full bg-transparent focus:outline-none"
-              >
-                <option value="">Select a destination</option>
-                {destinations.map((d) => (
-                  <option key={d.id}>{d.name}</option>
-                ))}
-              </select>
+            {/* HEADER */}
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="font-semibold text-lg">AI Travel Planner ✨</h2>
+              <button onClick={() => setOpen(false)}>✕</button>
             </div>
-          </motion.div>
-        )}
 
-        {activeField === "dates" && (
-          <motion.div
-            key="dates"
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            className="overflow-hidden"
-          >
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-              <div className="border rounded-xl px-4 py-3 bg-white shadow-sm">
-                <label className="block text-sm font-medium text-gray-600 mb-1">
-                  Start Date
-                </label>
-                <input
-                  type="date"
-                  required
-                  value={startDate}
-                  onChange={(e) => setStartDate(e.target.value)}
-                  className="w-full focus:outline-none"
-                />
-              </div>
-              <div className="border rounded-xl px-4 py-3 bg-white shadow-sm">
-                <label className="block text-sm font-medium text-gray-600 mb-1">
-                  End Date
-                </label>
-                <input
-                  type="date"
-                  required
-                  value={endDate}
-                  onChange={(e) => setEndDate(e.target.value)}
-                  className="w-full focus:outline-none"
-                />
-              </div>
+            {/* ACTIVITIES */}
+            <div className="flex flex-wrap gap-2 mb-4">
+              {activitiesList.map((a) => (
+                <button
+                  key={a}
+                  onClick={() => toggleActivity(a)}
+                  className={`px-3 py-1 rounded-full text-sm transition ${
+                    activities.includes(a)
+                      ? "bg-white text-black"
+                      : "bg-white/10 hover:bg-white/20"
+                  }`}
+                >
+                  {a}
+                </button>
+              ))}
             </div>
-          </motion.div>
-        )}
 
-        {activeField === "people" && (
-          <motion.div
-            key="people"
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            className="overflow-hidden"
-          >
-            <div className="border rounded-xl px-4 py-3 bg-white shadow-sm mb-4">
-              <label className="block text-sm font-medium text-gray-600 mb-1">
-                Number of People
-              </label>
-              <input
-                type="number"
-                min={1}
-                value={people}
-                onChange={(e) => setPeople(Number(e.target.value))}
-                className="w-full focus:outline-none"
-              />
+            {/* AI BUTTON */}
+            <button
+              onClick={suggest}
+              className="w-full py-2 rounded-xl bg-gradient-to-r from-blue-500 to-indigo-500 mb-4"
+            >
+              Suggest Destinations ✨
+            </button>
+
+            {/* SUGGESTIONS */}
+            <div className="space-y-2 max-h-40 overflow-auto">
+              {suggested.map((place) => (
+                <div
+                  key={place}
+                  onClick={() => setDestination(place)}
+                  className="p-3 rounded-xl bg-white/10 hover:bg-white/20 cursor-pointer"
+                >
+                  {place}
+                </div>
+              ))}
             </div>
+
+            {/* DESTINATION */}
+            <input
+              placeholder="Destination"
+              value={destination}
+              onChange={(e) => setDestination(e.target.value)}
+              className="mt-4 w-full p-3 rounded-xl bg-white/10 border border-white/10"
+            />
+
+            {/* CTA */}
+            <button className="mt-4 w-full py-3 rounded-xl bg-white text-black font-semibold">
+              Generate Plan 🚀
+            </button>
           </motion.div>
         )}
       </AnimatePresence>
-
-      <button
-        type="submit"
-        disabled={loading}
-        className="mt-4 w-full sm:w-auto px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-500 transition"
-      >
-        {loading ? "Searching..." : "Search Plans"}
-      </button>
-
-      {/* Results */}
-      {!loading && results.hotels.length > 0 && (
-        <motion.div
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mt-6 text-left"
-        >
-          <h3 className="font-semibold text-lg mb-2">Hotels</h3>
-          <ul className="space-y-1 text-sm text-gray-700">
-            {results.hotels.map((h, i) => (
-              <li key={i}>
-                {h.name} – {h.price}
-              </li>
-            ))}
-          </ul>
-
-          <h3 className="font-semibold text-lg mt-4 mb-2">Food & Eateries</h3>
-          <ul className="space-y-1 text-sm text-gray-700">
-            {results.food.map((f, i) => (
-              <li key={i}>
-                {f.name} – {f.type}
-              </li>
-            ))}
-          </ul>
-        </motion.div>
-      )}
-    </form>
+    </div>
   );
 }

@@ -18,7 +18,7 @@ type Props = {
 export default async function DisplayPageWithPlanner({ destinations }: Props) {
   return (
     <>
-      <NewHome />
+      <NewHome destinations={destinations} />
       <div className="w-full mt-auto">
         <Footer />
       </div>
