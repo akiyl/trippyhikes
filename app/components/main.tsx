@@ -11,7 +11,7 @@ import { Destination } from "@prisma/client";
 gsap.registerPlugin(ScrollTrigger);
 
 type Props = {
-  destinations?: Destination[];
+  destinations: Destination[];
 };
 
 export default function NewHome({ destinations }: Props) {

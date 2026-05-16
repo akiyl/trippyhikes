@@ -17,8 +17,7 @@ export default function BookYourNextTrip({ destinations }: Props) {
     "Monsoon ",
     "solo trek",
     "family trek",
-    ,
-    "PanchKedaar trek",
+    "PanchKedar trek",
     "college trek",
   ];
   const [activeCategory, setActiveCategory] = useState("Valley trek");

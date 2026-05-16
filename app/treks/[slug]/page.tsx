@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import { getDestinationBySlug, getDestinations } from "@/lib/getDestination";
+import { getDestinationBySlug } from "@/lib/getDestination";
 import TrekDetailMotion from "@/app/components/trekDetailsMotion";
 import { prisma } from "@/lib/prisma";
 import { Star, MapPin, Calendar, Mountain } from "lucide-react";
@@ -18,7 +18,6 @@ export default async function TrekDetailPage({ params }: Props) {
     : resolved?.slug;
   if (!rawSlug) return notFound();
   const trek = await getDestinationBySlug(String(rawSlug));
-  const destinations = await getDestinations();
 
   // Try to load itinerary from the Itienary model (match by slug or name)
   const itinerary = await prisma.itienary.findFirst({
@@ -208,7 +207,7 @@ export default async function TrekDetailPage({ params }: Props) {
         </TrekDetailMotion>
       )}
       <section className="max-w-6xl mx-auto px-6 py-12 flex flex-col  items-center justify-center ">
-        <SchedulePlannerClient destinations={destinations} />
+        <SchedulePlannerClient />
         <Link
           className=" w-[250px] h-[50px] px-1 py-2 bg-blue-400 text-white rounded-md  hover:bg-blue-500 transition text-center text-xl uppercase tracking-widest"
           href={`https://wa.me/${6398901953}?text=${encodeURIComponent(
