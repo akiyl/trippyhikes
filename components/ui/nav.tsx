@@ -47,13 +47,17 @@ const NavBar = () => {
 
         {/* Logo */}
         <div className="flex items-center gap-4">
-          <Link href="/" className="flex flex-col leading-tight items-center">
+          <Link href="/" className="flex  leading-tight items-center">
+            <span className="text-sm md:text-md uppercase tracking-[0.35em] text-gray-200">
+              <img
+                className="w-10 h-10 object-cover"
+                src="./images/t2h2.png"
+                alt="TrekToHim Logo"
+              />
+            </span>
             <h1 className="text-lg sm:text-xl md:text-2xl font-semibold tracking-wide">
               TRAVEL TO HIMALAYAS
             </h1>
-            <span className="text-sm md:text-md uppercase tracking-[0.35em] text-gray-200">
-              LUDRALA
-            </span>
           </Link>
         </div>
 
