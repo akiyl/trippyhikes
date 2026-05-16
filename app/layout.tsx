@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   title: "TrekToHim - Your Ultimate Hiking Companion",
   description:
     "Discover breathtaking trails, plan your perfect trek, and explore the world with TrekToHim. Your adventure starts here!",
-  icons: [{ rel: "icon", url: "/t2h.jpg" }],
+  icons: [{ rel: "icon", url: "/images/t2h.png" }],
 };
 
 export default function RootLayout({
