@@ -140,11 +140,11 @@ export default async function TrekDetailPage({ params }: Props) {
                   </div>
                 )}
               </div>
-            ) : (
+            ) : trek.trekItinerary ? (
               <p className="whitespace-pre-line text-gray-300 leading-relaxed">
-                no iternary
+                {trek.trekItinerary}
               </p>
-            )}
+            ) : null}
           </section>
         </TrekDetailMotion>
       )}
