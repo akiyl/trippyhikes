@@ -12,9 +12,9 @@ export default function BookYourNextTrip({ destinations }: Props) {
   const categories = [
     "Valley trek",
     "Summit trek",
-    "Summer ",
-    "Winter ",
-    "Monsoon ",
+    "Summer",
+    "Winter",
+    "Monsoon",
     "solo trek",
     "family trek",
     "PanchKedar trek",
@@ -22,13 +22,17 @@ export default function BookYourNextTrip({ destinations }: Props) {
   ];
   const [activeCategory, setActiveCategory] = useState("Valley trek");
 
-  const filtered = destinations.filter(
-    (d) => d.season?.toLowerCase() === activeCategory.toLowerCase(),
-  );
+  const filtered = destinations.filter((d) => {
+    const cat = activeCategory.toLowerCase();
+    return (
+      d.trailType?.toLowerCase() === cat ||
+      d.season?.toLowerCase().includes(cat)
+    );
+  });
 
   return (
     <section className="py-12 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 z-900 text-white">
-      <h2 className="text-3xl sm:text-4xl font-bold mb-6">
+      <h2 className="text-3xl sm:text-4xl font-bold mb-6 text-[#fb8500]">
         Book your Next Trip
       </h2>
 

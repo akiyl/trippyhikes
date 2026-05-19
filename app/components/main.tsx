@@ -141,7 +141,9 @@ export default function NewHome({ destinations }: Props) {
               Adventure Awaits
             </div>
             <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold leading-tight tracking-tight">
-              <span className="block">{words[0]}</span>
+              <span ref={textEl} className="block text-[#fb8500]">
+                {words[0]}
+              </span>
               <span className="block">THE</span>
               <span className="block">HIMALAYAS</span>
             </h1>
